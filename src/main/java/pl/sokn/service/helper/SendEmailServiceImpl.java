@@ -17,7 +17,7 @@ import java.io.File;
 @Service
 public class SendEmailServiceImpl implements SendEmailService {
 
-    private static final String EMAIL = "gpf.ver.1.0@gmail.com";
+    private static final String EMAIL = "sokn.noreply@gmail.com";
     private final JavaMailSender emailSender;
 
     @Autowired
