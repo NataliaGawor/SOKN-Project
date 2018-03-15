@@ -24,4 +24,11 @@ public interface SoknDefinitions {
 
         private ErrorMessages() {}
     }
+
+    class Roles {
+        public static final String DEFAULT_ROLE = "USER";
+        public static final String ADMIN_ROLE = "ADMIN";
+
+        private Roles() {}
+    }
 }

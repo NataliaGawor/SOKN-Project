@@ -71,6 +71,6 @@ public abstract class AbstractGenericService<E, K extends Serializable> implemen
     }
 
     String getAppUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":" + "4200" + request.getContextPath();
+        return "http://" + request.getServerName() + ":" + "3000" + request.getContextPath();
     }
 }

@@ -12,7 +12,7 @@ public class UserController extends AbstractGenericController<UserDTO, User, Lon
     private UserService userService;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(@pl.sokn.annotation.qualifier.UserService UserService userService) {
         super(userService);
         this.userService = userService;
     }

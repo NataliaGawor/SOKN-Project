@@ -8,6 +8,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import pl.sokn.dto.EmailMessage;
 import pl.sokn.dto.UserDTO;
+import pl.sokn.entity.User;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -67,11 +68,11 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     @Override
-    public void constructRegistrationEmail(String contextPath, String token, UserDTO user) {
+    public void constructRegistrationEmail(String contextPath, String token, User user) {
         final String recipientAddress = user.getEmail();
         final String SUBJECT = "Registration Confirmation";
         final String confirmationUrl
-                = contextPath + "/#/user/activate/" + token;
+                = contextPath + "/user/activate/" + token;
         final String message = "\nConfirm email:\n" + confirmationUrl;
 
         sendSimpleMessage(recipientAddress, SUBJECT, message);

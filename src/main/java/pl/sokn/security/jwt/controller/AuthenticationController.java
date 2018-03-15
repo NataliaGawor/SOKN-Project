@@ -30,7 +30,7 @@ public class AuthenticationController {
     private final JwtTokenUtil jwtTokenUtil;
 
     @Autowired
-    public AuthenticationController(UserService userService,
+    public AuthenticationController(@pl.sokn.annotation.qualifier.UserService UserService userService,
                                     AuthenticationManager authenticationManager,
                                     JwtTokenUtil jwtTokenUtil) {
         this.userService = userService;
