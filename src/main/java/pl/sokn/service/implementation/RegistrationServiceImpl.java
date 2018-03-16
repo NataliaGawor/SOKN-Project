@@ -8,9 +8,11 @@ import pl.sokn.definitions.SoknDefinitions.Roles;
 import pl.sokn.dto.PasswordCreate;
 import pl.sokn.dto.PasswordUpdate;
 import pl.sokn.entity.Authority;
+import pl.sokn.entity.PasswordResetToken;
 import pl.sokn.entity.User;
 import pl.sokn.entity.VerificationToken;
 import pl.sokn.exception.OperationException;
+import pl.sokn.repository.PasswordResetTokenRepository;
 import pl.sokn.repository.TokenRepository;
 import pl.sokn.repository.UserRepository;
 import pl.sokn.service.AuthorityService;
@@ -26,8 +28,9 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     public RegistrationServiceImpl(UserRepository userRepository,
                                    AuthorityService authorityService,
                                    PasswordEncoder passwordEncoder,
-                                   TokenRepository tokenRepository) {
-        super(userRepository, authorityService, passwordEncoder, tokenRepository);
+                                   TokenRepository tokenRepository,
+                                   PasswordResetTokenRepository passwordResetTokenRepository) {
+        super(userRepository, authorityService, passwordEncoder, tokenRepository, passwordResetTokenRepository);
     }
 
     @Override
@@ -99,27 +102,80 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     @Override
-    public String createPasswordResetTokenForUser(String email, HttpServletRequest request) throws OperationException {
-        return null;
+    public String createPasswordResetTokenForUser(String email, HttpServletRequest request) {
+        final User user = retrieveByCredentials(email);
+        //if exists
+        final String token = UUID.randomUUID().toString();
+        final PasswordResetToken myToken = new PasswordResetToken(token, user);
+        user.setEnabled(false);
+        userRepository.save(user);
+        passwordResetTokenRepository.save(myToken);
+
+        emailService.constructForgotPasswordTokenEmail(getAppUrl(request), token, user);
+
+        return jsonService.constructResetTokenResponse(token, email);
     }
 
     @Override
     public String generateNewResetPasswordToken(String currentToken, HttpServletRequest request) throws OperationException {
-        return null;
+        final PasswordResetToken rToken = passwordResetTokenRepository.findByToken(currentToken);
+        if (rToken != null)
+            rToken.updateToken(UUID.randomUUID().toString());
+
+        if (rToken == null)
+            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_TOKEN);
+
+        final PasswordResetToken saved = passwordResetTokenRepository.save(rToken);
+        final User user = saved.getUser();
+
+        emailService.constructForgotPasswordTokenEmail(getAppUrl(request), saved.getToken(), user);
+
+        return jsonService.constructResetTokenResponse(rToken.getToken(), user.getEmail());
     }
 
     @Override
     public void validatePasswordResetToken(Long id, String token) throws OperationException {
+        final PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
+        if ((passToken == null) || (!passToken.getUser().getId().equals(id)))
+            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_TOKEN);
 
-    }
+        final Calendar cal = Calendar.getInstance();
+        if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0)
+            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.TOKEN_EXPIRED);
 
-    @Override
-    public void changeUserPassword(PasswordUpdate password, String credentials) throws OperationException {
-
+        final User user = passToken.getUser();
+        user.setEnabled(true);
+        userRepository.save(user);
     }
 
     @Override
     public void resetUserPassword(PasswordCreate passwordCreate) throws OperationException {
+        final User user = userRepository.findById(passwordCreate.getUserId()).orElse(null);
+        if (user == null)
+            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.USER_DOES_NOT_EXISTS);
 
+        if (validateOldPassword(passwordCreate.getPassword(), user.getPassword()))
+            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.P_ARE_THE_SAME);
+
+        user.setPassword(passwordEncoder.encode(passwordCreate.getPassword()));
+        userRepository.save(user);
+    }
+
+    @Override
+    public void changeUserPassword(PasswordUpdate password, String credentials) throws OperationException {
+        final User entity = retrieveByCredentials(credentials);
+        if (validateOldPassword(password.getPassword(), entity.getPassword()))
+            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.P_ARE_THE_SAME);
+
+        // oldPassword property provided by User has to be the same as entity's password
+        if (!validateOldPassword(password.getOldPassword(), entity.getPassword()))
+            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_OLD_P);
+
+        entity.setPassword(passwordEncoder.encode(password.getPassword()));
+        userRepository.save(entity);
+    }
+
+    private boolean validateOldPassword(final String oldPassword, final String oldUserPassword) {
+        return passwordEncoder.matches(oldPassword, oldUserPassword);
     }
 }

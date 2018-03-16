@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sokn.entity.User;
+import pl.sokn.repository.PasswordResetTokenRepository;
 import pl.sokn.repository.TokenRepository;
 import pl.sokn.repository.UserRepository;
 import pl.sokn.service.AuthorityService;
@@ -18,24 +19,24 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
     final AuthorityService authorityService;
     final PasswordEncoder passwordEncoder;
     final TokenRepository tokenRepository;
+    final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            AuthorityService authorityService,
-                           PasswordEncoder passwordEncoder, TokenRepository tokenRepository) {
+                           PasswordEncoder passwordEncoder,
+                           TokenRepository tokenRepository,
+                           PasswordResetTokenRepository passwordResetTokenRepository) {
         super(userRepository);
         this.userRepository = userRepository;
         this.authorityService = authorityService;
         this.passwordEncoder = passwordEncoder;
         this.tokenRepository = tokenRepository;
+        this.passwordResetTokenRepository = passwordResetTokenRepository;
     }
 
     @Override
     public User retrieveByCredentials(final String credentials) {
-        return useCredentials(credentials);
-    }
-
-    private User useCredentials(final String credentials) {
         User userEntity = userRepository.findByUsername(credentials);
         if (userEntity == null)
             userEntity = userRepository.findByEmail(credentials);

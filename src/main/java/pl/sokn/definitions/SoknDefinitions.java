@@ -2,6 +2,19 @@ package pl.sokn.definitions;
 
 public interface SoknDefinitions {
 
+    class Api {
+        public static final String LOGIN = "/login";
+        public static final String REFRESH = "/refresh";
+        public static final String USERS_PATH = "/user";
+        public static final String REGISTER = USERS_PATH + "/register";
+        public static final String REGISTRATION_CONFIRM = USERS_PATH + "/registrationConfirm";
+        public static final String RESEND_REGISTRATION_TOKEN = USERS_PATH + "/resendRegistrationToken";
+        public static final String CHANGE_PASSWORD = USERS_PATH + "/changePassword";
+        public static final String RESET_PASSWORD = USERS_PATH + "/resetPassword";
+        public static final String FORGOT_PASSWORD = USERS_PATH + "/forgotPassword";
+        public static final String RESEND_FORGOT_PASSWORD = USERS_PATH + "/resendPasswordToken";
+
+    }
     class ApiMessages {
 
         public static final String REGISTRATION_TOKEN_SEND = "Email to {0} has sent.";

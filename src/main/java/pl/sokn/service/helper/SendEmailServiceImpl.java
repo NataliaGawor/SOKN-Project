@@ -7,7 +7,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import pl.sokn.dto.EmailMessage;
-import pl.sokn.dto.UserDTO;
 import pl.sokn.entity.User;
 
 import javax.mail.MessagingException;
@@ -79,11 +78,11 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     @Override
-    public void constructForgotPasswordTokenEmail(String contextPath, String token, UserDTO user) {
+    public void constructForgotPasswordTokenEmail(String contextPath, String token, User user) {
         final String recipientAddress = user.getEmail();
         final String SUBJECT = "Reset Password";
         final String confirmationUrl
-                = contextPath + "/#/user/reset/change/" + user.getId() + "/" + token;
+                = contextPath + "/user/reset/" + user.getId() + "/" + token;
         final String message = "Your reset password URL: \n" + confirmationUrl;
 
         sendSimpleMessage(recipientAddress, SUBJECT, message);

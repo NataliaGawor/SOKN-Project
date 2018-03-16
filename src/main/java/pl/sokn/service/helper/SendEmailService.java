@@ -1,7 +1,6 @@
 package pl.sokn.service.helper;
 
 import pl.sokn.dto.EmailMessage;
-import pl.sokn.dto.UserDTO;
 import pl.sokn.entity.User;
 
 import javax.mail.MessagingException;
@@ -15,5 +14,5 @@ public interface SendEmailService {
 
     void constructRegistrationEmail(final String contextPath, final String token, final User user);
 
-    void constructForgotPasswordTokenEmail(final String contextPath, final String token, final UserDTO user);
+    void constructForgotPasswordTokenEmail(final String contextPath, final String token, final User user);
 }

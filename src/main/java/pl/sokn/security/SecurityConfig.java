@@ -3,6 +3,7 @@ package pl.sokn.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.BeanIds;
@@ -13,6 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import pl.sokn.definitions.SoknDefinitions.Api;
+import pl.sokn.definitions.SoknDefinitions.Roles;
 import pl.sokn.security.jwt.JwtAuthenticationEntryPoint;
 import pl.sokn.security.jwt.JwtAuthenticationTokenFilter;
 
@@ -42,7 +46,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
                 .authorizeRequests()
-                .anyRequest().permitAll();
+                .antMatchers(HttpMethod.DELETE).hasAuthority(Roles.ADMIN_ROLE)
+                .antMatchers(HttpMethod.GET).permitAll()
+                .antMatchers(
+                        Api.LOGIN,
+                        Api.REFRESH,
+                        Api.REGISTER + "/**",
+                        Api.REGISTRATION_CONFIRM + "/**",
+                        Api.RESEND_REGISTRATION_TOKEN + "/**",
+                        Api.CHANGE_PASSWORD + "/**",
+                        Api.FORGOT_PASSWORD + "/**",
+                        Api.RESEND_FORGOT_PASSWORD + "/**",
+                        Api.RESET_PASSWORD + "/**",
+                        "/documentation/**",
+                        "/swagger-resources/**",
+                        "/v2/api-docs").permitAll()
+                .anyRequest().authenticated();
+
+        // Custom JWT based security filter
+        http
+                .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
