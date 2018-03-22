@@ -1,5 +1,6 @@
 package pl.sokn.controller;
 
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,7 @@ public abstract class AbstractGenericController<T extends Serializable, E, K ext
         this.authenticationFacade = authenticationFacade;
     }
 
+    @ApiOperation(value = "Save object in database")
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<E> create(@RequestBody @Valid T t) throws OperationException {
         final E saved = service.save(convertToEntity(t));
@@ -43,6 +45,7 @@ public abstract class AbstractGenericController<T extends Serializable, E, K ext
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
+    @ApiOperation(value = "Retrieve object by ID")
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<E> get(@PathVariable final K id) {
         final E e = service.retrieve(id);
@@ -54,6 +57,7 @@ public abstract class AbstractGenericController<T extends Serializable, E, K ext
         return ResponseEntity.notFound().build();
     }
 
+    @ApiOperation(value = "Retrieve all objects")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<E>> getAll() {
         final Collection<E> all = service.getAll();
@@ -61,6 +65,7 @@ public abstract class AbstractGenericController<T extends Serializable, E, K ext
         return ResponseEntity.ok(all);
     }
 
+    @ApiOperation(value = "Delete object by ID")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<T> delete(@PathVariable final K id) {
         service.removeById(id);

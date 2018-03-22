@@ -22,7 +22,7 @@ import java.io.IOException;
 
 @PropertySource("classpath:properties/sokn.properties")
 @Slf4j
-public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     private UserDetailsService customUserDetailsService;
     private JwtTokenUtil jwtTokenUtil;

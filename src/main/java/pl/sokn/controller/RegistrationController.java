@@ -1,5 +1,7 @@
 package pl.sokn.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,6 +20,7 @@ import pl.sokn.service.RegistrationService;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+@Api(tags = "Registration")
 @RestController
 @RequestMapping(path = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RegistrationController {
@@ -32,6 +35,7 @@ public class RegistrationController {
         this.authenticationFacade = authenticationFacade;
     }
 
+    @ApiOperation(value = "User registration")
     @PostMapping(path = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity registerUser(@RequestBody @Valid final UserDTO user, final HttpServletRequest request) throws OperationException {
         final User registered = registrationService.save(convertToEntity(user));
@@ -41,6 +45,7 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.CREATED).body(json);
     }
 
+    @ApiOperation(value = "Resend the registration token")
     @PostMapping(value = "/resendRegistrationToken/{token}")
     public ResponseEntity resendRegistrationToken(@PathVariable("token") final String existingToken, HttpServletRequest request) throws OperationException {
         final String json = registrationService.generateNewVerificationToken(existingToken, request);
@@ -48,6 +53,7 @@ public class RegistrationController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(json);
     }
 
+    @ApiOperation("Registration confirmation after clicking in the link in the email - enables user")
     @GetMapping(value = "/registrationConfirm/{token}")
     public ResponseEntity confirmRegistration(@PathVariable final String token) throws OperationException {
         registrationService.enableRegisteredUser(token);
@@ -56,6 +62,7 @@ public class RegistrationController {
         );
     }
 
+    @ApiOperation("Executes after clicking \"Forgot password\" option")
     @PostMapping(value = "/forgotPassword/{email:.+}")
     public ResponseEntity sendForgotPasswordEmail(@PathVariable final String email, final HttpServletRequest request) {
         final String json = registrationService.createPasswordResetTokenForUser(email, request);
@@ -63,6 +70,7 @@ public class RegistrationController {
         return ResponseEntity.ok(json);
     }
 
+    @ApiOperation(value = "Resend the forgot password token")
     @PostMapping(value = "/resendPasswordToken/{token}")
     public ResponseEntity resendForgotPasswordToken(@PathVariable("token") final String existingToken, HttpServletRequest request) throws OperationException {
         final String json = registrationService.generateNewResetPasswordToken(existingToken, request);
@@ -70,6 +78,7 @@ public class RegistrationController {
         return ResponseEntity.ok(json);
     }
 
+    @ApiOperation(value = "Redirect user to \"Provide new password\" page when response is ACCEPTED after clicking the link in the email")
     @GetMapping(value = "/changePassword/{id}/{token}")
     public ResponseEntity validatePasswordResetToken(@PathVariable("id") final Long id, @PathVariable("token") final String token) throws OperationException {
         registrationService.validatePasswordResetToken(id, token);
@@ -78,6 +87,7 @@ public class RegistrationController {
                 .body(new CustomResponseMessage<>(HttpStatus.ACCEPTED, ApiMessages.TOKEN_IS_VALID));
     }
 
+    @ApiOperation(value = "Option available on \"Provide new password\" page. User enters a new password")
     @PostMapping(value = "/resetPassword", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity resetPassword(@RequestBody @Valid final PasswordCreate passwordCreate) throws OperationException {
         registrationService.resetUserPassword(passwordCreate);
@@ -85,6 +95,7 @@ public class RegistrationController {
         return ResponseEntity.ok().body(new CustomResponseMessage<>(HttpStatus.OK, ApiMessages.P_UPDATED_SUCCESSFULLY));
     }
 
+    @ApiOperation(value = "Option available for logged in user who just want update a password")
     @PostMapping(value = "/updatePassword", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity changeUserPassword(@RequestBody @Valid final PasswordUpdate passwordUpdate) throws OperationException {
         final String NAME = authenticationFacade.getAuthentication().getName();

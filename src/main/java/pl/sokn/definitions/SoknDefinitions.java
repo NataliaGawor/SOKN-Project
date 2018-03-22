@@ -34,6 +34,7 @@ public interface SoknDefinitions {
         public static final String TOKEN_EXPIRED = "Your token expired";
         public static final String INVALID_OLD_P = "Invalid old password";
         public static final String P_ARE_THE_SAME = "Your new and old password cannot be the same";
+        public static final String P_CHANGE_NOT_ALLOWED = "Your are not allowed to change the password";
 
         private ErrorMessages() {}
     }
@@ -41,6 +42,7 @@ public interface SoknDefinitions {
     class Roles {
         public static final String DEFAULT_ROLE = "USER";
         public static final String ADMIN_ROLE = "ADMIN";
+        public static final String PASS_CHANGE_ROLE = "PASS_CHANGE";
 
         private Roles() {}
     }

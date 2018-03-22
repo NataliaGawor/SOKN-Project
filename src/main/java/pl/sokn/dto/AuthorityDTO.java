@@ -1,5 +1,6 @@
 package pl.sokn.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,6 +12,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ApiModel(value = "Authority")
 public class AuthorityDTO implements Serializable {
     private static final long serialVersionUID = -3665542098319008959L;
 

@@ -20,7 +20,8 @@ public class DataLoader implements ApplicationRunner {
         entityManager.createNativeQuery(
                 "INSERT IGNORE INTO `authority` (`id_authority`, `description`, `role`) VALUES\n" +
                         "  (1, 'Default role for user', 'USER'),\n" +
-                        "  (2, 'Admin - Has permission to perform admin tasks', 'ADMIN');"
+                        "  (2, 'Admin - Has permission to perform admin tasks', 'ADMIN'),\n" +
+                        "  (3, 'Password Change - Role for user who clicked \"forgot password\"', 'PASS_CHANGE');"
         ).executeUpdate();
 
         entityManager.createNativeQuery(

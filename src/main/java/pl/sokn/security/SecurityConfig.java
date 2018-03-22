@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import pl.sokn.definitions.SoknDefinitions.Api;
 import pl.sokn.definitions.SoknDefinitions.Roles;
 import pl.sokn.security.jwt.JwtAuthenticationEntryPoint;
-import pl.sokn.security.jwt.JwtAuthenticationTokenFilter;
+import pl.sokn.security.jwt.AuthenticationTokenFilter;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -69,8 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JwtAuthenticationTokenFilter authenticationTokenFilterBean() {
-        return new JwtAuthenticationTokenFilter();
+    public AuthenticationTokenFilter authenticationTokenFilterBean() {
+        return new AuthenticationTokenFilter();
     }
 
     @Override

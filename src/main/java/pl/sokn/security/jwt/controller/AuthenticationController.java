@@ -1,5 +1,7 @@
 package pl.sokn.security.jwt.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
@@ -12,12 +14,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import pl.sokn.entity.User;
 import pl.sokn.security.jwt.JwtTokenUtil;
-import pl.sokn.security.jwt.model.JwtAuthenticationRequest;
+import pl.sokn.security.jwt.model.AuthenticationRequest;
 import pl.sokn.security.jwt.model.JwtAuthenticationResponse;
 import pl.sokn.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Api(tags = "Authentication")
 @RestController
 @RequestMapping
 public class AuthenticationController {
@@ -38,8 +41,9 @@ public class AuthenticationController {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    @ApiOperation(value = "Enter valid credentials and get authentication token")
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest) {
+    public ResponseEntity createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
 
         // Perform the security
         final Authentication authentication = authenticationManager.authenticate(
@@ -57,6 +61,7 @@ public class AuthenticationController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(token, user));
     }
 
+    @ApiOperation(value = "Refresh your token if is still valid")
     @GetMapping(path = "/refresh")
     public ResponseEntity refreshAndGetAuthenticationToken(HttpServletRequest request) {
         final String authToken = request.getHeader(tokenHeader);

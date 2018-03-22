@@ -20,6 +20,7 @@ import pl.sokn.service.RegistrationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -145,6 +146,10 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
 
         final User user = passToken.getUser();
         user.setEnabled(true);
+
+        final Authority authority = authorityService.retrieve(Roles.PASS_CHANGE_ROLE);
+        user.getAuthorities().add(authority);
+
         userRepository.save(user);
     }
 
@@ -154,9 +159,16 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
         if (user == null)
             throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.USER_DOES_NOT_EXISTS);
 
+        final boolean match = user.getAuthorities().stream()
+                .anyMatch(authority -> Roles.PASS_CHANGE_ROLE.equalsIgnoreCase(authority.getRole()));
+
+        if (!match)
+            throw new OperationException(HttpStatus.FORBIDDEN, ErrorMessages.P_CHANGE_NOT_ALLOWED);
+
         if (validateOldPassword(passwordCreate.getPassword(), user.getPassword()))
             throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.P_ARE_THE_SAME);
 
+        user.getAuthorities().remove(authorityService.retrieve(Roles.PASS_CHANGE_ROLE));
         user.setPassword(passwordEncoder.encode(passwordCreate.getPassword()));
         userRepository.save(user);
     }

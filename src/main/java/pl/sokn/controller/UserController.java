@@ -1,11 +1,13 @@
 package pl.sokn.controller;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pl.sokn.dto.UserDTO;
 import pl.sokn.entity.User;
 import pl.sokn.service.UserService;
 
+@Api(tags = "User")
 @RestController
 @RequestMapping(path = "/user")
 public class UserController extends AbstractGenericController<UserDTO, User, Long>{

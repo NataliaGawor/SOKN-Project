@@ -1,4 +1,4 @@
-package pl.sokn.config;
+package pl.sokn.documentation;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
