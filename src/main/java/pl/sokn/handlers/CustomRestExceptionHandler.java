@@ -5,6 +5,7 @@ import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -47,6 +48,15 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         final ErrorMessage apiError =
                 new ErrorMessage(HttpStatus.BAD_REQUEST,
                         newArrayList(ErrorMessages.TOKEN_EXPIRED, ex.getLocalizedMessage()));
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler({BadCredentialsException.class})
+    public ResponseEntity<Object> handleExpiredJwtException(final BadCredentialsException ex) {
+        final ErrorMessage apiError =
+                new ErrorMessage(HttpStatus.UNAUTHORIZED,
+                        List.of(ex.getLocalizedMessage()));
+
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 
