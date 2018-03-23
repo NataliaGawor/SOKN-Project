@@ -20,7 +20,6 @@ import pl.sokn.service.RegistrationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
