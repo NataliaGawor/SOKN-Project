@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import pl.sokn.dto.AuthorityDTO;
 import pl.sokn.dto.UserDTO;
+import pl.sokn.enums.Gender;
 
 import javax.persistence.*;
 import java.util.Optional;
@@ -23,7 +24,11 @@ public class User {
     @Column(name = "id_user")
     private Long id;
 
-    private String username;
+    private String firstName;
+    private String lastName;
+    @Enumerated(value = EnumType.STRING)
+    private Gender gender;
+    private String degree;
     private String email;
     private String password;
     private Boolean enabled;
@@ -45,7 +50,10 @@ public class User {
 
         final User user = new User();
         user.setId(dto.getId());
-        user.setUsername(dto.getUsername());
+        user.setFirstName(dto.getFirstName());
+        user.setLastName(dto.getLastName());
+        user.setGender(dto.getGender());
+        user.setDegree(dto.getDegree());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setEnabled(dto.getEnabled());
@@ -61,7 +69,10 @@ public class User {
 
         final UserDTO user = new UserDTO();
         user.setId(entity.getId());
-        user.setUsername(entity.getUsername());
+        user.setFirstName(entity.getFirstName());
+        user.setLastName(entity.getLastName());
+        user.setGender(entity.getGender());
+        user.setDegree(entity.getDegree());
         user.setEmail(entity.getEmail());
         user.setEnabled(entity.getEnabled());
         final Set<Authority> roles = Optional.ofNullable(entity.getAuthorities()).orElse(Set.of());

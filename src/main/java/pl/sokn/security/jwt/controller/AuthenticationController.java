@@ -56,7 +56,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         final String token = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
-        final User user = userService.retrieveByCredentials(authenticationRequest.getUsername());
+        final User user = userService.retrieveByEmail(authenticationRequest.getUsername());
 
         return ResponseEntity.ok(new JwtAuthenticationResponse(token, user));
     }
@@ -75,7 +75,7 @@ public class AuthenticationController {
         jwtTokenUtil.canTokenBeRefreshed(token);
 
         final String refreshedToken = jwtTokenUtil.refreshToken(token);
-        final User user = userService.retrieveByCredentials(jwtTokenUtil.getUsernameFromToken(token));
+        final User user = userService.retrieveByEmail(jwtTokenUtil.getUsernameFromToken(token));
         return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken, user));
     }
 }

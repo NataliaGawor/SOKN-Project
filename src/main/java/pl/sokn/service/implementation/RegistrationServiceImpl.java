@@ -20,7 +20,6 @@ import pl.sokn.service.RegistrationService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -62,7 +61,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     public void enableRegisteredUser(String token) throws OperationException {
         final VerificationToken vToken = tokenRepository.findByToken(token);
         if (vToken == null)
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_TOKEN);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_TOKEN);
 
         final Calendar cal = Calendar.getInstance();
         if ((vToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0)
@@ -93,7 +92,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
             vToken.updateToken(UUID.randomUUID().toString());
 
         if (vToken == null)
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_TOKEN);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_TOKEN);
 
         final VerificationToken newToken = tokenRepository.save(vToken);
         final User tokenUser = newToken.getUser();
@@ -104,7 +103,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
 
     @Override
     public String createPasswordResetTokenForUser(String email, HttpServletRequest request) {
-        final User user = retrieveByCredentials(email);
+        final User user = retrieveByEmail(email);
         //if exists
         final String token = UUID.randomUUID().toString();
         final PasswordResetToken myToken = new PasswordResetToken(token, user);
@@ -124,7 +123,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
             rToken.updateToken(UUID.randomUUID().toString());
 
         if (rToken == null)
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_TOKEN);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_TOKEN);
 
         final PasswordResetToken saved = passwordResetTokenRepository.save(rToken);
         final User user = saved.getUser();
@@ -138,11 +137,11 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     public void validatePasswordResetToken(Long id, String token) throws OperationException {
         final PasswordResetToken passToken = passwordResetTokenRepository.findByToken(token);
         if ((passToken == null) || (!passToken.getUser().getId().equals(id)))
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_TOKEN);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_TOKEN);
 
         final Calendar cal = Calendar.getInstance();
         if ((passToken.getExpiryDate().getTime() - cal.getTime().getTime()) <= 0)
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.TOKEN_EXPIRED);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.TOKEN_EXPIRED);
 
         final User user = passToken.getUser();
         user.setEnabled(true);
@@ -157,7 +156,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     public void resetUserPassword(PasswordCreate passwordCreate) throws OperationException {
         final User user = userRepository.findById(passwordCreate.getUserId()).orElse(null);
         if (user == null)
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.USER_DOES_NOT_EXISTS);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.USER_DOES_NOT_EXISTS);
 
         final boolean match = user.getAuthorities().stream()
                 .anyMatch(authority -> Roles.PASS_CHANGE_ROLE.equalsIgnoreCase(authority.getRole()));
@@ -166,7 +165,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
             throw new OperationException(HttpStatus.FORBIDDEN, ErrorMessages.P_CHANGE_NOT_ALLOWED);
 
         if (validateOldPassword(passwordCreate.getPassword(), user.getPassword()))
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.P_ARE_THE_SAME);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.P_ARE_THE_SAME);
 
         user.getAuthorities().remove(authorityService.retrieve(Roles.PASS_CHANGE_ROLE));
         user.setPassword(passwordEncoder.encode(passwordCreate.getPassword()));
@@ -175,13 +174,13 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
 
     @Override
     public void changeUserPassword(PasswordUpdate password, String credentials) throws OperationException {
-        final User entity = retrieveByCredentials(credentials);
+        final User entity = retrieveByEmail(credentials);
         if (validateOldPassword(password.getPassword(), entity.getPassword()))
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.P_ARE_THE_SAME);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.P_ARE_THE_SAME);
 
         // oldPassword property provided by User has to be the same as entity's password
         if (!validateOldPassword(password.getOldPassword(), entity.getPassword()))
-            throw new OperationException(HttpStatus.CONFLICT, ErrorMessages.INVALID_OLD_P);
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_OLD_P);
 
         entity.setPassword(passwordEncoder.encode(password.getPassword()));
         userRepository.save(entity);

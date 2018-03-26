@@ -72,7 +72,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         }
 
         final ErrorMessage apiError =
-                new ErrorMessage(HttpStatus.CONFLICT, errors);
+                new ErrorMessage(HttpStatus.BAD_REQUEST, errors);
         return handleExceptionInternal(ex, apiError, headers, apiError.getStatus(), request);
     }
 

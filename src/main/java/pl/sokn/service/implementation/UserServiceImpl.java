@@ -36,25 +36,11 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
     }
 
     @Override
-    public User retrieveByCredentials(final String credentials) {
-        User userEntity = userRepository.findByUsername(credentials);
-        if (userEntity == null)
-            userEntity = userRepository.findByEmail(credentials);
-
-        return userEntity;
-    }
-
-    @Override
     public User retrieveByEmail(final String email) {
         return userRepository.findByEmail(email);
     }
 
-    @Override
-    public User retrieveByName(final String name) {
-        return userRepository.findByUsername(name);
-    }
-
     boolean isUserInDB(final User user) {
-        return retrieveByEmail(user.getEmail()) != null || retrieveByName(user.getUsername()) != null;
+        return retrieveByEmail(user.getEmail()) != null;
     }
 }

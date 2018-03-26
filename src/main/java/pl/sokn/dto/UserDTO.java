@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import pl.sokn.annotation.validation.PasswordMatches;
+import pl.sokn.enums.Gender;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
@@ -26,17 +27,29 @@ public class UserDTO implements Serializable {
     private Long id;
 
     @NotBlank
-    @ApiModelProperty(required = true, position = 1, example = "username")
-    private String username;
+    @ApiModelProperty(required = true, position = 1, example = "firstName")
+    private String firstName;
 
     @NotBlank
-    @ApiModelProperty(required = true, position = 2, example = "username@email.com")
+    @ApiModelProperty(required = true, position = 2, example = "lastName")
+    private String lastName;
+
+    @ApiModelProperty(required = true, position = 3, example = "MALE")
+    private Gender gender;
+
+    @NotBlank
+    @ApiModelProperty(required = true, position = 4, example = "degree")
+    private String degree;
+
+    @NotBlank
+    @ApiModelProperty(required = true, position = 5, example = "username@email.com")
     private String email;
 
     @NotBlank
-    @ApiModelProperty(required = true, position = 3, example = "password")
+    @ApiModelProperty(required = true, position = 6, example = "password")
     private String password;
-    @ApiModelProperty(required = true, position = 4, example = "matching")
+
+    @ApiModelProperty(required = true, position = 7, example = "matching")
     private String matchingPassword;
     private Boolean enabled;
     private Set<AuthorityDTO> authorities;

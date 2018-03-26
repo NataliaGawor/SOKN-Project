@@ -69,22 +69,22 @@ public class SendEmailServiceImpl implements SendEmailService {
     @Override
     public void constructRegistrationEmail(String contextPath, String token, User user) {
         final String recipientAddress = user.getEmail();
-        final String SUBJECT = "Registration Confirmation";
+        final String subject = "Registration Confirmation";
         final String confirmationUrl
                 = contextPath + "/user/activate/" + token;
         final String message = "\nConfirm email:\n" + confirmationUrl;
 
-        sendSimpleMessage(recipientAddress, SUBJECT, message);
+        sendSimpleMessage(recipientAddress, subject, message);
     }
 
     @Override
     public void constructForgotPasswordTokenEmail(String contextPath, String token, User user) {
         final String recipientAddress = user.getEmail();
-        final String SUBJECT = "Reset Password";
+        final String subject = "Reset Password";
         final String confirmationUrl
                 = contextPath + "/user/reset/" + user.getId() + "/" + token;
         final String message = "Your reset password URL: \n" + confirmationUrl;
 
-        sendSimpleMessage(recipientAddress, SUBJECT, message);
+        sendSimpleMessage(recipientAddress, subject, message);
     }
 }
