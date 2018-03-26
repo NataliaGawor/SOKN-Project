@@ -11,7 +11,6 @@ public class PasswordUpdate implements PasswordBase {
 
     @NotBlank
     private String oldPassword;
-
     @NotBlank
     private String password;
     @NotBlank
