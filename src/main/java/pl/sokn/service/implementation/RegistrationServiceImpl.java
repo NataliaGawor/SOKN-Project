@@ -49,16 +49,21 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     private User saveUser(final User entity, final Authority role) {
+        // new users are disabled
         entity.setEnabled(false);
+        // encode password
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
+        // add role for user
+        // in this case spring inserts user and role's id into user_authorities table
         entity.getAuthorities().add(role);
 
+        // save user in database and return entity with id
         return userRepository.save(entity);
     }
 
     @Override
-    public void enableRegisteredUser(String token) throws OperationException {
+    public void enableRegisteredUser(final String token) throws OperationException {
         final VerificationToken vToken = tokenRepository.findByToken(token);
         if (vToken == null)
             throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_TOKEN);
@@ -68,25 +73,32 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
             throw new OperationException(HttpStatus.NOT_ACCEPTABLE, ErrorMessages.TOKEN_EXPIRED);
 
         final User user = vToken.getUser();
+        // enable user if token is valid
         user.setEnabled(true);
 
+        // we use save method also for UPDATING entities in the database
         userRepository.save(user);
     }
 
     @Override
-    public String createVerificationToken(User user, HttpServletRequest request) {
+    public VerificationToken createVerificationToken(final User user, final HttpServletRequest request) {
         final String token = UUID.randomUUID().toString();
 
         final VerificationToken myToken = new VerificationToken(token, user);
-        tokenRepository.save(myToken);
+        return tokenRepository.save(myToken);
+    }
 
+    @Override
+    public String sendRegistrationEmail(final VerificationToken vToken, final HttpServletRequest request) {
+        final String token = vToken.getToken();
+        final User user = vToken.getUser();
         emailService.constructRegistrationEmail(getAppUrl(request), token, user);
 
         return jsonService.constructRegistrationResponse(token, user.getEmail());
     }
 
     @Override
-    public String generateNewVerificationToken(String existingVerificationToken, HttpServletRequest request) throws OperationException {
+    public VerificationToken generateNewVerificationToken(String existingVerificationToken, HttpServletRequest request) throws OperationException {
         VerificationToken vToken = tokenRepository.findByToken(existingVerificationToken);
         if (vToken != null)
             vToken.updateToken(UUID.randomUUID().toString());
@@ -94,30 +106,32 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
         if (vToken == null)
             throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_TOKEN);
 
-        final VerificationToken newToken = tokenRepository.save(vToken);
-        final User tokenUser = newToken.getUser();
-        emailService.constructRegistrationEmail(getAppUrl(request), newToken.getToken(), tokenUser);
-
-        return jsonService.constructRegistrationResponse(newToken.getToken(), tokenUser.getEmail());
+        return tokenRepository.save(vToken);
     }
 
     @Override
-    public String createPasswordResetTokenForUser(String email, HttpServletRequest request) {
+    public PasswordResetToken createPasswordResetTokenForUser(String email, HttpServletRequest request) {
         final User user = retrieveByEmail(email);
         //if exists
         final String token = UUID.randomUUID().toString();
         final PasswordResetToken myToken = new PasswordResetToken(token, user);
         user.setEnabled(false);
         userRepository.save(user);
-        passwordResetTokenRepository.save(myToken);
-
-        emailService.constructForgotPasswordTokenEmail(getAppUrl(request), token, user);
-
-        return jsonService.constructResetTokenResponse(token, email);
+        return passwordResetTokenRepository.save(myToken);
     }
 
     @Override
-    public String generateNewResetPasswordToken(String currentToken, HttpServletRequest request) throws OperationException {
+    public String sendForgotPasswordEmail(final PasswordResetToken rToken, final HttpServletRequest request) {
+        final String token = rToken.getToken();
+        final User user = rToken.getUser();
+
+        emailService.constructForgotPasswordTokenEmail(getAppUrl(request), token, user);
+
+        return jsonService.constructResetTokenResponse(token, user.getEmail());
+    }
+
+    @Override
+    public PasswordResetToken generateNewResetPasswordToken(String currentToken, HttpServletRequest request) throws OperationException {
         final PasswordResetToken rToken = passwordResetTokenRepository.findByToken(currentToken);
         if (rToken != null)
             rToken.updateToken(UUID.randomUUID().toString());
@@ -125,12 +139,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
         if (rToken == null)
             throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.INVALID_TOKEN);
 
-        final PasswordResetToken saved = passwordResetTokenRepository.save(rToken);
-        final User user = saved.getUser();
-
-        emailService.constructForgotPasswordTokenEmail(getAppUrl(request), saved.getToken(), user);
-
-        return jsonService.constructResetTokenResponse(rToken.getToken(), user.getEmail());
+        return passwordResetTokenRepository.save(rToken);
     }
 
     @Override

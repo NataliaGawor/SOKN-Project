@@ -5,6 +5,9 @@ import pl.sokn.entity.User;
 
 import javax.mail.MessagingException;
 
+/**
+ * Service responsible for sending emails
+ */
 public interface SendEmailService {
     void sendSimpleMessage(final String to, final String subject, final String text);
 

@@ -6,6 +6,9 @@ import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The entity needed for storing password reset token in the database
+ */
 @Entity
 @Data
 public class PasswordResetToken {
@@ -18,6 +21,7 @@ public class PasswordResetToken {
 
     private String token;
 
+    // one-to-one relation with user
     @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;

@@ -46,6 +46,7 @@ public class AuthenticationController {
     public ResponseEntity createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
 
         // Perform the security
+        // It uses CustomUserDetailService
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authenticationRequest.getUsername(),
@@ -53,14 +54,22 @@ public class AuthenticationController {
                 )
         );
 
+        // if user provided valid credentials we set him in the SecurityContext
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // generate JWT token for user (will be stored in localStorage)
         final String token = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
+        // it is optional for now, if we won't use information about user in the future, we can remove this
         final User user = userService.retrieveByEmail(authenticationRequest.getUsername());
 
         return ResponseEntity.ok(new JwtAuthenticationResponse(token, user));
     }
 
+    /**
+     *
+     * @param request with Authentication token that will be updated
+     * @return new JWT token
+     */
     @ApiOperation(value = "Refresh your token if is still valid")
     @GetMapping(path = "/refresh")
     public ResponseEntity refreshAndGetAuthenticationToken(HttpServletRequest request) {

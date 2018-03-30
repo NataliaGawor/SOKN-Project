@@ -22,6 +22,9 @@ import java.util.List;
 import static com.google.common.collect.Lists.newArrayList;
 import static springfox.documentation.builders.PathSelectors.any;
 
+/**
+ * Configuration class for auto-generated Swagger documentation
+ */
 @EnableSwagger2
 @Configuration
 public class SwaggerConfiguration {

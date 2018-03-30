@@ -18,6 +18,9 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Class needed for creating and validating JWT tokens
+ */
 @Component
 @PropertySource("classpath:properties/sokn.properties")
 @Slf4j

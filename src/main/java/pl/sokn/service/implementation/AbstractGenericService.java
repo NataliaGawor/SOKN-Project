@@ -13,6 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * Generic service that should be extended by another services
+ * It provides CRUD operations and injects useful services that can be used on other services
+ *
+ * @param <E> entity class
+ * @param <K> primary key type
+ */
 public abstract class AbstractGenericService<E, K extends Serializable> implements GenericService<E, K> {
     private final GenericRepository<E, K> repository;
     SendEmailService emailService;
@@ -22,6 +29,7 @@ public abstract class AbstractGenericService<E, K extends Serializable> implemen
         this.repository = repository;
     }
 
+    // with entity manager we can create custom SQL queries
     @PersistenceContext
     EntityManager entityManager;
 
@@ -71,6 +79,6 @@ public abstract class AbstractGenericService<E, K extends Serializable> implemen
     }
 
     String getAppUrl(HttpServletRequest request) {
-        return "http://" + request.getServerName() + ":" + "3000" + request.getContextPath();
+        return "http://" + request.getServerName() + request.getContextPath();
     }
 }

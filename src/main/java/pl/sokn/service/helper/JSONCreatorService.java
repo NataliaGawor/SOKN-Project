@@ -1,5 +1,8 @@
 package pl.sokn.service.helper;
 
+/**
+ * Service that helps creating custom JSON
+ */
 public interface JSONCreatorService {
     String constructRegistrationResponse(final String token, final String email);
 

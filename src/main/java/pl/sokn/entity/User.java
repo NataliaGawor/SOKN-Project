@@ -13,12 +13,20 @@ import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 
+/**
+ * Class with @Entity annotation will be generated in the database as a table
+ */
 @Entity
 @Builder
 @Data
 @AllArgsConstructor
 public class User {
 
+    /**
+     * @apiNote @Id this field is primary key
+     * @apiNote @GeneratedValue#GenerationType.IDENTITY database takes care about generating new id
+     * @apiNote @Column custom name for column
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_user")
@@ -26,6 +34,7 @@ public class User {
 
     private String firstName;
     private String lastName;
+    // we store enum as a varchar in the database
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
     private String degree;
@@ -33,7 +42,9 @@ public class User {
     private String password;
     private Boolean enabled;
 
+    // settings for many-to-many relationship between user and authorities
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    // we set custom names for table and columns between user and authorities
     @JoinTable(name = "user_authorities",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id_user")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id_authority")})

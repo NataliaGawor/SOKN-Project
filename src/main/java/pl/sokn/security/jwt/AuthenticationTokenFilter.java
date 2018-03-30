@@ -40,6 +40,11 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    /**
+     * Check if token sent in header is valid
+     *
+     * @param request - contains an "Authorization" header with Bearer token
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         final String requestHeader = request.getHeader(this.tokenHeader);
@@ -60,14 +65,21 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
             final UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
 
+            // checks whether token is valid
             if (jwtTokenUtil.validateToken(authToken)) {
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(username, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // if user attached valid token we set him in the SecurityContext
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
+        /*
+                if token wasn't valid or empty - user can't access secured end points
+         */
 
+        // CORS settings
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-Allow-Methods", "*");

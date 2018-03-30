@@ -20,6 +20,9 @@ import pl.sokn.definitions.SoknDefinitions.Roles;
 import pl.sokn.security.jwt.JwtAuthenticationEntryPoint;
 import pl.sokn.security.jwt.AuthenticationTokenFilter;
 
+/**
+ * Setting for Spring Security
+ */
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -46,8 +49,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 
                 .authorizeRequests()
-                .antMatchers(HttpMethod.DELETE).hasAuthority(Roles.ADMIN_ROLE)
+                .antMatchers(HttpMethod.DELETE).hasAuthority(Roles.ADMIN_ROLE) // only admins can use DELETE methods in REST controllers
                 .antMatchers(HttpMethod.GET).permitAll()
+                // when you create new end point which should be accessible for unauthenticated user only
+                // please add the path here
                 .antMatchers(
                         Api.LOGIN,
                         Api.REFRESH,
@@ -60,10 +65,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Api.RESET_PASSWORD + "/**",
                         "/documentation/**",
                         "/swagger-resources/**",
-                        "/v2/api-docs").permitAll()
-                .anyRequest().authenticated();
+                        "/v2/api-docs").permitAll() // access for every user
+                .anyRequest().authenticated(); // any request is not accessible by default
 
         // Custom JWT based security filter
+        // It is used when user tries access the data accessible only for authenticated users
         http
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
     }
@@ -88,6 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
+        // default password encryption algorithm is BCrypt
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 

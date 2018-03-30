@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
+/**
+ * We save sample data in the database here
+ */
 @Component
 public class DataLoader implements ApplicationRunner {
 

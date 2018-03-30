@@ -9,12 +9,24 @@ import lombok.Data;
 import pl.sokn.annotation.validation.PasswordMatches;
 import pl.sokn.enums.Gender;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 
+/**
+ * We use DTO classes for sending and retrieving data through HTTP protocol
+ *
+ * @apiNote @Data creates setters and getters
+ * @apiNote @Builder used for builder design pattern
+ * @apiNote @AllArgsConstructor creates constructor with all arguments
+ * @apiNote @PasswordMatches - annotation created by
+ *              @author Patryk that checks if passwords sent in json are the same
+ * @apiNote @JsonInclude with this settings we exclude empty collections from json response
+ * @apiNote @ApiModel model description for Swagger
+ */
 @Data
 @Builder
 @AllArgsConstructor
@@ -26,6 +38,13 @@ public class UserDTO implements Serializable {
 
     private Long id;
 
+    /**
+     * @apiNote - @NotBlank annotation is used when @Valid annotation is used in the controller. For example
+     * @see pl.sokn.controller.RegistrationController#registerUser(UserDTO, HttpServletRequest)
+     *
+     * For more validation annotations
+     * @see javax.validation.constraints package
+     */
     @NotBlank
     @ApiModelProperty(required = true, position = 1, example = "firstName")
     private String firstName;

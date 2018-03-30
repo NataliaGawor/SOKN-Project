@@ -2,7 +2,9 @@ package pl.sokn.service;
 
 import pl.sokn.dto.PasswordCreate;
 import pl.sokn.dto.PasswordUpdate;
+import pl.sokn.entity.PasswordResetToken;
 import pl.sokn.entity.User;
+import pl.sokn.entity.VerificationToken;
 import pl.sokn.exception.OperationException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,13 +13,17 @@ public interface RegistrationService extends UserService {
 
     void enableRegisteredUser(final String token) throws OperationException;
 
-    String createVerificationToken(final User user, final HttpServletRequest request);
+    VerificationToken createVerificationToken(final User user, final HttpServletRequest request);
 
-    String generateNewVerificationToken(final String existingVerificationToken, HttpServletRequest request) throws OperationException;
+    String sendRegistrationEmail(VerificationToken vToken, HttpServletRequest request);
 
-    String createPasswordResetTokenForUser(String email, HttpServletRequest request);
+    VerificationToken generateNewVerificationToken(final String existingVerificationToken, HttpServletRequest request) throws OperationException;
 
-    String generateNewResetPasswordToken(final String currentToken, HttpServletRequest request) throws OperationException;
+    PasswordResetToken createPasswordResetTokenForUser(String email, HttpServletRequest request);
+
+    String sendForgotPasswordEmail(PasswordResetToken pToken, HttpServletRequest request);
+
+    PasswordResetToken generateNewResetPasswordToken(final String currentToken, HttpServletRequest request) throws OperationException;
 
     void validatePasswordResetToken(Long id, String token) throws OperationException;
 

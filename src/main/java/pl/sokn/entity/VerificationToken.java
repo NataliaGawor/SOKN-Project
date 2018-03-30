@@ -7,6 +7,9 @@ import javax.persistence.*;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The entity needed for storing registration token in the database
+ */
 @Entity
 @Data
 @NoArgsConstructor

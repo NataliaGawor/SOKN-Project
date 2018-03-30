@@ -8,6 +8,9 @@ import pl.sokn.dto.AuthorityDTO;
 
 import javax.persistence.*;
 
+/**
+ * The entity with roles, e.g. ADMIN
+ */
 @Entity
 @Builder
 @Data

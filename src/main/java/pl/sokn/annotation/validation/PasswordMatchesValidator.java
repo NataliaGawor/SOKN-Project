@@ -11,9 +11,15 @@ public class PasswordMatchesValidator
 
     @Override
     public void initialize(PasswordMatches constraintAnnotation) {
-        // Do nothing because we validate all object
+        // Do nothing because we validate whole object
     }
 
+    /**
+     *
+     * @param obj - An object that is send during registration
+     * @param context - we don't use functionality of this object
+     * @return true if passwords matches, false otherwise
+     */
     @Override
     public boolean isValid(Object obj, ConstraintValidatorContext context) {
         if (obj instanceof UserDTO) {

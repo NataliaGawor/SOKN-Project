@@ -12,6 +12,10 @@ import pl.sokn.repository.UserRepository;
 
 import java.util.stream.Collectors;
 
+/**
+ * Class responsible for retrieving user from database and checking if he provided valid credentials
+ * in logging form
+ */
 @Service
 @Primary
 public class CustomUserDetailService implements UserDetailsService {
