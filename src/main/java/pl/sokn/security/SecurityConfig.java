@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET).permitAll()
                 // when you create new end point which should be accessible for unauthenticated user only
                 // please add the path here
-                .antMatchers(
+                .antMatchers("/checkIfRegistered",
                         Api.LOGIN,
                         Api.REFRESH,
                         Api.REGISTER + "/**",
