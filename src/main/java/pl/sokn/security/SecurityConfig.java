@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET).permitAll()
                 // when you create new end point which should be accessible for unauthenticated user only
                 // please add the path here
-                .antMatchers("/checkIfRegistered",
+                .antMatchers(
                         Api.LOGIN,
                         Api.REFRESH,
                         Api.REGISTER + "/**",
@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Api.FORGOT_PASSWORD + "/**",
                         Api.RESEND_FORGOT_PASSWORD + "/**",
                         Api.RESET_PASSWORD + "/**",
+                        Api.CHECK_IF_REGISTERED+"/**",
                         "/documentation/**",
                         "/swagger-resources/**",
                         "/v2/api-docs").permitAll() // access for every user

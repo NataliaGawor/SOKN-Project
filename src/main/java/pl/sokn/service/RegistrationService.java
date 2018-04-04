@@ -15,13 +15,13 @@ public interface RegistrationService extends UserService {
 
     VerificationToken createVerificationToken(final User user, final HttpServletRequest request);
 
-    String sendRegistrationEmail(VerificationToken vToken, HttpServletRequest request);
+    String sendRegistrationEmail(VerificationToken vToken, HttpServletRequest request) throws OperationException;
 
     VerificationToken generateNewVerificationToken(final String existingVerificationToken, HttpServletRequest request) throws OperationException;
 
     PasswordResetToken createPasswordResetTokenForUser(String email, HttpServletRequest request);
 
-    String sendForgotPasswordEmail(PasswordResetToken pToken, HttpServletRequest request);
+    String sendForgotPasswordEmail(PasswordResetToken pToken, HttpServletRequest request) throws OperationException;
 
     PasswordResetToken generateNewResetPasswordToken(final String currentToken, HttpServletRequest request) throws OperationException;
 

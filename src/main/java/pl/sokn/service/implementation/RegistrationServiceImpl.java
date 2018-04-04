@@ -89,7 +89,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     @Override
-    public String sendRegistrationEmail(final VerificationToken vToken, final HttpServletRequest request) {
+    public String sendRegistrationEmail(final VerificationToken vToken, final HttpServletRequest request) throws OperationException {
         final String token = vToken.getToken();
         final User user = vToken.getUser();
         emailService.constructRegistrationEmail(getAppUrl(request), token, user);
@@ -121,7 +121,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     @Override
-    public String sendForgotPasswordEmail(final PasswordResetToken rToken, final HttpServletRequest request) {
+    public String sendForgotPasswordEmail(final PasswordResetToken rToken, final HttpServletRequest request) throws OperationException {
         final String token = rToken.getToken();
         final User user = rToken.getUser();
 

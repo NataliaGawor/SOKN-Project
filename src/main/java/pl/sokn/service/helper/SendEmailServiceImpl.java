@@ -2,12 +2,14 @@ package pl.sokn.service.helper;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import pl.sokn.dto.EmailMessage;
 import pl.sokn.entity.User;
+import pl.sokn.exception.OperationException;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -26,14 +28,26 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     @Override
-    public void sendSimpleMessage(final String to, final String subject, final String text) {
-        final SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(EMAIL);
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
+    public void sendSimpleMessage(final String to, final String subject, final String text) throws OperationException{
+//        final SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom(EMAIL);
+//        message.setTo(to);
+//        message.setSubject(subject);
+//        message.setText(text);
+//
+//        emailSender.send(message);
 
-        emailSender.send(message);
+        try {
+            MimeMessage mimeMessage = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessage.setContent(text, "text/html");
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setFrom(EMAIL);
+            emailSender.send(mimeMessage);
+        }catch (MessagingException e){
+            throw new OperationException(HttpStatus.REQUEST_TIMEOUT,"Email nie został wysłany");
+        }
     }
 
     @Override
@@ -67,7 +81,7 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     @Override
-    public void constructRegistrationEmail(String contextPath, String token, User user) {
+    public void constructRegistrationEmail(String contextPath, String token, User user) throws OperationException {
         final String recipientAddress = user.getEmail();
         final String subject = "Registration Confirmation";
         final String confirmationUrl
@@ -78,7 +92,7 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     @Override
-    public void constructForgotPasswordTokenEmail(String contextPath, String token, User user) {
+    public void constructForgotPasswordTokenEmail(String contextPath, String token, User user) throws OperationException {
         final String recipientAddress = user.getEmail();
         final String subject = "Reset Password";
         final String confirmationUrl
