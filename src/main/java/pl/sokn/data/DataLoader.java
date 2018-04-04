@@ -21,18 +21,18 @@ public class DataLoader implements ApplicationRunner {
     @Transactional
     public void run(ApplicationArguments args) {
         entityManager.createNativeQuery(
-                "INSERT IGNORE INTO authority (id_authority, description, role) VALUES\n" +
-                        "  (1, 'Default role for user', 'USER'),\n" +
-                        "  (2, 'Admin - Has permission to perform admin tasks', 'ADMIN'),\n" +
-                        "  (3, 'Password Change - Role for user who clicked \"forgot password\"', 'PASS_CHANGE');"
+                "INSERT IGNORE INTO authority (id_authority,  role) VALUES\n" +
+                        "  (1,  'USER'),\n" +
+                        "  (2,  'ADMIN'),\n" +
+                        "  (3,  'PASS_CHANGE');"
         ).executeUpdate();
 
         entityManager.createNativeQuery(
                 "INSERT IGNORE INTO\n" +
-                        "  user (id_user, first_name, last_name, email, enabled, password, degree, gender)\n" +
+                        "  user (id_user, first_name, last_name, email, enabled, password)\n" +
                         "VALUES\n" +
-                        "  (1, 'First', 'User', 'user@email.com', 1, '{bcrypt}$2a$10$usFd.2lfQzOVG/N45uDr7emsFOenWpAtwjqmROMqevyqou/eG26rS', 'MGR', 'MALE'),\n" +
-                        "  (2, 'Admin', 'User', 'admin@email.com', 1, '{bcrypt}$2a$10$usFd.2lfQzOVG/N45uDr7emsFOenWpAtwjqmROMqevyqou/eG26rS', 'DOCTOR', 'MALE');"
+                        "  (1, 'First', 'User', 'user@email.com', 1, '{bcrypt}$2a$10$usFd.2lfQzOVG/N45uDr7emsFOenWpAtwjqmROMqevyqou/eG26rS'),\n" +
+                        "  (2, 'Admin', 'User', 'admin@email.com', 1, '{bcrypt}$2a$10$usFd.2lfQzOVG/N45uDr7emsFOenWpAtwjqmROMqevyqou/eG26rS');"
         ).executeUpdate();
 
         entityManager.createNativeQuery(

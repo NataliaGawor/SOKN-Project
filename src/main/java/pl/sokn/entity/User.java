@@ -34,10 +34,6 @@ public class User {
 
     private String firstName;
     private String lastName;
-    // we store enum as a varchar in the database
-    @Enumerated(value = EnumType.STRING)
-    private Gender gender;
-    private String degree;
     private String email;
     private String password;
     private Boolean enabled;
@@ -63,8 +59,6 @@ public class User {
         user.setId(dto.getId());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
-        user.setGender(dto.getGender());
-        user.setDegree(dto.getDegree());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setEnabled(dto.getEnabled());
@@ -82,8 +76,6 @@ public class User {
         user.setId(entity.getId());
         user.setFirstName(entity.getFirstName());
         user.setLastName(entity.getLastName());
-        user.setGender(entity.getGender());
-        user.setDegree(entity.getDegree());
         user.setEmail(entity.getEmail());
         user.setEnabled(entity.getEnabled());
         final Set<Authority> roles = Optional.ofNullable(entity.getAuthorities()).orElse(Set.of());
