@@ -22,10 +22,10 @@ import pl.sokn.service.implementation.UserServiceImpl;
 @RestController
 @RequestMapping(path = SoknDefinitions.Api.USERS_PATH)
 public class UserController extends AbstractGenericController<UserDTO, User, Long>{
-    private UserServiceImpl userService;
+    private UserService userService;
 
     @Autowired
-    public UserController(@pl.sokn.annotation.qualifier.UserService UserServiceImpl userService){
+    public UserController(@pl.sokn.annotation.qualifier.UserService UserService userService){
         super(userService);
         this.userService = userService;
     }

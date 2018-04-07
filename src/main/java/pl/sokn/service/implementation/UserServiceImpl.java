@@ -50,6 +50,7 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
         return retrieveByEmail(user.getEmail()) != null;
     }
 
+    @Override
     public User isUserInDB(final String email, final HttpServletRequest request)throws OperationException{
         User user=retrieveByEmail(email);
         String url=getAppUrl(request);
