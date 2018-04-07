@@ -63,7 +63,7 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
         // it is optional for now, if we won't use information about user in the future, we can remove this
         final User user = userService.retrieveByEmail(authenticationRequest.getUsername());
-        return ResponseEntity.ok(new JwtAuthenticationResponse(token, user,user.getAuthorities()));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(token, user));
     }
 
     /**
@@ -86,6 +86,6 @@ public class AuthenticationController {
 
         final String refreshedToken = jwtTokenUtil.refreshToken(token);
         final User user = userService.retrieveByEmail(jwtTokenUtil.getUsernameFromToken(token));
-        return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken, user, user.getAuthorities()));
+        return ResponseEntity.ok(new JwtAuthenticationResponse(refreshedToken, user));
     }
 }
