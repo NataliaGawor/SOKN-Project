@@ -17,6 +17,7 @@ import pl.sokn.repository.TokenRepository;
 import pl.sokn.repository.UserRepository;
 import pl.sokn.service.AuthorityService;
 import pl.sokn.service.RegistrationService;
+import pl.sokn.service.helper.SendEmailService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
@@ -29,8 +30,9 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
                                    AuthorityService authorityService,
                                    PasswordEncoder passwordEncoder,
                                    TokenRepository tokenRepository,
-                                   PasswordResetTokenRepository passwordResetTokenRepository) {
-        super(userRepository, authorityService, passwordEncoder, tokenRepository, passwordResetTokenRepository);
+                                   PasswordResetTokenRepository passwordResetTokenRepository,
+                                   SendEmailService sendEmailService) {
+        super(userRepository, authorityService, passwordEncoder, tokenRepository, passwordResetTokenRepository,sendEmailService);
     }
 
     @Override
@@ -89,7 +91,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     @Override
-    public String sendRegistrationEmail(final VerificationToken vToken, final HttpServletRequest request) {
+    public String sendRegistrationEmail(final VerificationToken vToken, final HttpServletRequest request) throws OperationException {
         final String token = vToken.getToken();
         final User user = vToken.getUser();
         emailService.constructRegistrationEmail(getAppUrl(request), token, user);
@@ -121,7 +123,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     @Override
-    public String sendForgotPasswordEmail(final PasswordResetToken rToken, final HttpServletRequest request) {
+    public String sendForgotPasswordEmail(final PasswordResetToken rToken, final HttpServletRequest request) throws OperationException {
         final String token = rToken.getToken();
         final User user = rToken.getUser();
 

@@ -16,6 +16,7 @@ public interface SoknDefinitions {
         public static final String RESET_PASSWORD = USERS_PATH + "/resetPassword";
         public static final String FORGOT_PASSWORD = USERS_PATH + "/forgotPassword";
         public static final String RESEND_FORGOT_PASSWORD = USERS_PATH + "/resendPasswordToken";
+        public static final String CHECK_IF_REGISTERED=USERS_PATH+"/checkIfRegistered";
 
         private Api() {}
     }
@@ -43,7 +44,7 @@ public interface SoknDefinitions {
     }
 
     class Roles {
-        public static final String DEFAULT_ROLE = "USER";
+        public static final String DEFAULT_ROLE = "AUTHOR";
         public static final String ADMIN_ROLE = "ADMIN";
         public static final String PASS_CHANGE_ROLE = "PASS_CHANGE";
 

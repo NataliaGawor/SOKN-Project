@@ -1,9 +1,11 @@
 package pl.sokn.security.jwt.model;
 
 import lombok.Data;
+import pl.sokn.entity.Authority;
 import pl.sokn.entity.User;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Data
 public class JwtAuthenticationResponse implements Serializable {

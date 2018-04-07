@@ -22,9 +22,9 @@ public class DataLoader implements ApplicationRunner {
     public void run(ApplicationArguments args) {
         entityManager.createNativeQuery(
                 "INSERT IGNORE INTO authority (id_authority, role) VALUES\n" +
-                        "  (1,'USER'),\n" +
-                        "  (2, 'ADMIN'),\n" +
-                        "  (3,  'PASS_CHANGE');"
+                        "  (1 , 'AUTHOR'),\n" +
+                        "  (2  , 'ADMIN'),\n" +
+                        "  (3  , 'PASS_CHANGE');"
         ).executeUpdate();
 
         entityManager.createNativeQuery(
@@ -41,5 +41,6 @@ public class DataLoader implements ApplicationRunner {
                         "  (2, 1),\n" +
                         "  (2, 2);"
         ).executeUpdate();
+
     }
 }

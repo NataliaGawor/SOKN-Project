@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import pl.sokn.entity.Authority;
 import pl.sokn.entity.User;
 import pl.sokn.security.jwt.JwtTokenUtil;
 import pl.sokn.security.jwt.model.AuthenticationRequest;
@@ -19,6 +20,7 @@ import pl.sokn.security.jwt.model.JwtAuthenticationResponse;
 import pl.sokn.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Set;
 
 @Api(tags = "Authentication")
 @RestController
@@ -61,7 +63,6 @@ public class AuthenticationController {
         final String token = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
         // it is optional for now, if we won't use information about user in the future, we can remove this
         final User user = userService.retrieveByEmail(authenticationRequest.getUsername());
-
         return ResponseEntity.ok(new JwtAuthenticationResponse(token, user));
     }
 

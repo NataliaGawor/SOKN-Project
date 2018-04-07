@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Api.FORGOT_PASSWORD + "/**",
                         Api.RESEND_FORGOT_PASSWORD + "/**",
                         Api.RESET_PASSWORD + "/**",
+                        Api.CHECK_IF_REGISTERED+"/**",
                         "/documentation/**",
                         "/swagger-resources/**",
                         "/v2/api-docs").permitAll() // access for every user

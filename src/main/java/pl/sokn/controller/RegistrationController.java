@@ -109,7 +109,7 @@ public class RegistrationController {
      */
     @ApiOperation("Executes after clicking \"Forgot password\" option")
     @PostMapping(value = "/forgotPassword/{email:.+}")
-    public ResponseEntity sendForgotPasswordEmail(@PathVariable final String email, final HttpServletRequest request) {
+    public ResponseEntity sendForgotPasswordEmail(@PathVariable final String email, final HttpServletRequest request) throws OperationException {
         final PasswordResetToken rToken = registrationService.createPasswordResetTokenForUser(email, request);
         final String json = registrationService.sendForgotPasswordEmail(rToken, request);
 
