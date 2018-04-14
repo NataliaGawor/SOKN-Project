@@ -28,15 +28,7 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     @Override
-    public void sendSimpleMessage(final String to, final String subject, final String text) throws OperationException{
-//        final SimpleMailMessage message = new SimpleMailMessage();
-//        message.setFrom(EMAIL);
-//        message.setTo(to);
-//        message.setSubject(subject);
-//        message.setText(text);
-//
-//        emailSender.send(message);
-
+    public void sendSimpleMessage(final String to, final String subject, final String text) throws OperationException {
         try {
             MimeMessage mimeMessage = emailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
@@ -44,9 +36,10 @@ public class SendEmailServiceImpl implements SendEmailService {
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setFrom(EMAIL);
+
             emailSender.send(mimeMessage);
-        }catch (MessagingException e){
-            throw new OperationException(HttpStatus.REQUEST_TIMEOUT,"Email nie został wysłany");
+        } catch (MessagingException e) {
+            throw new OperationException(HttpStatus.REQUEST_TIMEOUT, "Email nie został wysłany");
         }
     }
 
@@ -83,10 +76,11 @@ public class SendEmailServiceImpl implements SendEmailService {
     @Override
     public void constructRegistrationEmail(String contextPath, String token, User user) throws OperationException {
         final String recipientAddress = user.getEmail();
-        final String subject = "Registration Confirmation";
+        final String subject = "Potwierdzenie rejestracji";
         final String confirmationUrl
-                = contextPath + "/user/activate/" + token;
-        final String message = "\nConfirm email:\n" + confirmationUrl;
+                = contextPath + "/user/registration/confirm.html?token=" + token;
+        final String message = "\nPotwierdz swój email:\n" +
+                "<a href=" + confirmationUrl + ">Aktywacja konta</a>";
 
         sendSimpleMessage(recipientAddress, subject, message);
     }
@@ -94,10 +88,11 @@ public class SendEmailServiceImpl implements SendEmailService {
     @Override
     public void constructForgotPasswordTokenEmail(String contextPath, String token, User user) throws OperationException {
         final String recipientAddress = user.getEmail();
-        final String subject = "Reset Password";
+        final String subject = "Reset hasła";
         final String confirmationUrl
-                = contextPath + "/user/reset/" + user.getId() + "/" + token;
-        final String message = "Your reset password URL: \n" + confirmationUrl;
+                = contextPath + "/user/reset/confirm.html?id=" + user.getId() + "?token=" + token;
+        final String message = "Potwierdz reset hasla: \n" +
+                "<a href=" + confirmationUrl + ">Reset hasla</a>";
 
         sendSimpleMessage(recipientAddress, subject, message);
     }

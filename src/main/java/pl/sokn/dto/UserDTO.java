@@ -70,6 +70,19 @@ public class UserDTO implements Serializable {
 
     @ApiModelProperty(required = true, position = 7, example = "matching")
     private String matchingPassword;
+
+    @ApiModelProperty(required = true, position = 8, example = "single")
+    private String affiliation;
+
+    @ApiModelProperty(required = true, position = 9, example = "Kraków")
+    private String city;
+
+    @ApiModelProperty(required = true, position = 10, example = "31-111")
+    private String zipCode;
+
+    @ApiModelProperty(required = true, position = 11, example = "Poland")
+    private String country;
+
     private Boolean enabled;
     private Set<AuthorityDTO> authorities;
 

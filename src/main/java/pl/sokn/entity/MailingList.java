@@ -5,9 +5,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-/**
- * The entity needed for storing registration token in the database
- */
 @Entity
 @Data
 @NoArgsConstructor
@@ -21,9 +18,8 @@ public class MailingList {
     private User user;
 
 
-    public MailingList( final User user) {
+    public MailingList(final User user) {
         super();
-        this.email = email;
         this.user = user;
     }
 
