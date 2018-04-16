@@ -53,7 +53,11 @@ public class MailingListController extends AbstractGenericController<MailingList
     @PostMapping(path="/checkIfSubscribe",consumes= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity checkIfSubscribe(@RequestBody MailingListDTO mailingListDTO) throws OperationException {
 
-        return ResponseEntity.ok(mailingListService.retrieve(convertToEntity(mailingListDTO).getEmail()));
+        if(mailingListService.checkIfSignedIn(convertToEntity(mailingListDTO).getEmail()))
+            return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK, mailingListDTO.getEmail()));
+
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK,""));
+
     }
 
     @ApiOperation(value = "Remove email address from mailing list")
