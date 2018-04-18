@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pl.sokn.definitions.SoknDefinitions;
+import pl.sokn.dto.CustomResponseMessage;
+import pl.sokn.dto.EmailMessage;
 import pl.sokn.dto.UserDTO;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
@@ -45,5 +48,12 @@ public class UserController extends AbstractGenericController<UserDTO, User, Lon
     public ResponseEntity checkIfRegistered(@RequestBody String email, final HttpServletRequest request) throws OperationException {
 
         return ResponseEntity.ok(userService.isUserInDB(email,request));
+    }
+
+    @ApiOperation(value = "Send contact e-mail")
+    @PostMapping(path="/sendContactEmail",consumes= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity sendContactEmail(@RequestBody EmailMessage emailDTO, final HttpServletRequest request) throws OperationException {
+        userService.sendEmail(emailDTO,request);
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK,""));
     }
 }
