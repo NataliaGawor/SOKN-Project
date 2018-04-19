@@ -40,6 +40,10 @@ public class User {
     private String degree;
     private String email;
     private String password;
+    private String affiliation;
+    private String city;
+    private String zipCode;
+    private String country;
     private Boolean enabled;
 
     // settings for many-to-many relationship between user and authorities
@@ -67,6 +71,10 @@ public class User {
         user.setDegree(dto.getDegree());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
+        user.setAffiliation(dto.getAffiliation());
+        user.setCity(dto.getCity());
+        user.setZipCode(dto.getZipCode());
+        user.setCountry(dto.getCountry());
         user.setEnabled(dto.getEnabled());
         final Set<AuthorityDTO> roles = Optional.ofNullable(dto.getAuthorities()).orElse(Set.of());
         roles.forEach(i -> user.getAuthorities().add(Authority.convertFrom(i)));
@@ -85,6 +93,10 @@ public class User {
         user.setGender(entity.getGender());
         user.setDegree(entity.getDegree());
         user.setEmail(entity.getEmail());
+        user.setAffiliation(entity.getAffiliation());
+        user.setCity(entity.getCity());
+        user.setZipCode(entity.getZipCode());
+        user.setCountry(entity.getCountry());
         user.setEnabled(entity.getEnabled());
         final Set<Authority> roles = Optional.ofNullable(entity.getAuthorities()).orElse(Set.of());
         roles.forEach(i -> user.getAuthorities().add(AuthorityDTO.builder().id(i.getId()).role(i.getRole()).build()));

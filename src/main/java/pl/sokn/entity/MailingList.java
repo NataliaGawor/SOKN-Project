@@ -10,6 +10,7 @@ import javax.validation.constraints.Email;
 /**
  * The entity needed for storing email addresses added to newsletter
  */
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,6 +23,7 @@ public class MailingList {
     public MailingList( final String email) {
         super();
         this.email = email;
+
     }
 
     public static MailingList convertFrom(final MailingListDTO dto){

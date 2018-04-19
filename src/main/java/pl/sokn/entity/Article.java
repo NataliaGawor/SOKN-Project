@@ -3,13 +3,8 @@ package pl.sokn.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import pl.sokn.dto.AuthorityDTO;
-import pl.sokn.dto.UserDTO;
-import pl.sokn.enums.Gender;
 
 import javax.persistence.*;
-import java.util.Optional;
-import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 
@@ -28,18 +23,18 @@ public class Article {
     private Long id;
 
     private String subject;
-    private String path_file;
-    private int grade_status;
+    private String pathFile;
+    private int gradeStatus;
 
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    public Article(String subject, String path_file, int grade_status) {
+    public Article(String subject, String pathFile, int gradeStatus) {
         this.subject = subject;
-        this.path_file=path_file;
-        this.grade_status=grade_status;
+        this.pathFile = pathFile;
+        this.gradeStatus = gradeStatus;
     }
 
 
