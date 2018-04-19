@@ -16,7 +16,7 @@ import javax.validation.constraints.Email;
 public class MailingList {
 
     @Id
-    @Email // TO DO create own, maybe just change error
+    @Email
     private String email;
 
     public MailingList( final String email) {

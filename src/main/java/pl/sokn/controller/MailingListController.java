@@ -51,9 +51,9 @@ public class MailingListController extends AbstractGenericController<MailingList
 
     @ApiOperation(value = "Check if email address is in mailing list")
     @PostMapping(path="/checkIfSubscribe",consumes= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity checkIfSubscribe(@RequestBody MailingListDTO mailingListDTO) throws OperationException {
-
-        if(mailingListService.checkIfSignedIn(convertToEntity(mailingListDTO).getEmail()))
+    public ResponseEntity checkIfSubscribe(@RequestBody MailingListDTO mailingListDTO){
+        //checkIfSignedIn returns true if email is subscribed
+        if(mailingListService.checkIfSignedIn(mailingListDTO.getEmail()))
             return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK, mailingListDTO.getEmail()));
 
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK,""));
