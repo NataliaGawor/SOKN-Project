@@ -66,11 +66,13 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
         return user;
     }
 
+    //Send Email to sokn.noreply
     @Override
     public void sendEmail(final EmailMessage emailDTO, final HttpServletRequest request)throws OperationException{
         String email=emailDTO.getEmail();
         String subject = emailDTO.getName();
         String message = emailDTO.getText();
-            sendEmailService.sendSimpleMessage(email,subject,message);
+
+        sendEmailService.sendSimpleMessage("sokn.noreply@gmail.com",subject,"E-mail from: "+ email+"<br/>"+message);
     }
 }
