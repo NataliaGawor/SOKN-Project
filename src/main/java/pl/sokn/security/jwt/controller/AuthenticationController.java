@@ -12,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import pl.sokn.entity.Authority;
 import pl.sokn.entity.User;
 import pl.sokn.security.jwt.JwtTokenUtil;
 import pl.sokn.security.jwt.model.AuthenticationRequest;
@@ -20,7 +19,7 @@ import pl.sokn.security.jwt.model.JwtAuthenticationResponse;
 import pl.sokn.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Set;
+import javax.validation.Valid;
 
 @Api(tags = "Authentication")
 @RestController
@@ -45,13 +44,13 @@ public class AuthenticationController {
 
     @ApiOperation(value = "Enter valid credentials and get authentication token")
     @PostMapping(path = "/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
+    public ResponseEntity createAuthenticationToken(@Valid @RequestBody final AuthenticationRequest authenticationRequest) {
 
         // Perform the security
         // It uses CustomUserDetailService
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        authenticationRequest.getUsername(),
+                        authenticationRequest.getEmail(),
                         authenticationRequest.getPassword()
                 )
         );
@@ -62,12 +61,11 @@ public class AuthenticationController {
         // generate JWT token for user (will be stored in localStorage)
         final String token = jwtTokenUtil.generateToken((UserDetails) authentication.getPrincipal());
         // it is optional for now, if we won't use information about user in the future, we can remove this
-        final User user = userService.retrieveByEmail(authenticationRequest.getUsername());
+        final User user = userService.retrieveByEmail(authenticationRequest.getEmail());
         return ResponseEntity.ok(new JwtAuthenticationResponse(token, user));
     }
 
     /**
-     *
      * @param request with Authentication token that will be updated
      * @return new JWT token
      */

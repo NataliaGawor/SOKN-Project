@@ -25,13 +25,4 @@ public class EmailMessage implements Serializable {
     @NotBlank
     private String text;
 
-    public String getEmail() {
-        return email;
-    }
-    public String getName() {
-        return name;
-    }
-    public String getText() {
-        return text;
-    }
 }

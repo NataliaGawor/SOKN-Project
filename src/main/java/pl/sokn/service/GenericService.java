@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public interface GenericService<E, K extends Serializable> {
-    E save(E dto) throws OperationException;
+    E save(E entity) throws OperationException;
     List<E> getAll();
     E retrieve(K id);
     void update(E dto);

@@ -9,9 +9,6 @@ public interface SoknDefinitions {
         public static final String LOGIN = "/login";
         public static final String REFRESH = "/refresh";
         public static final String MAILING_LIST = "/mailingList";
-        public static final String MAILING_LIST_SUB = MAILING_LIST + "/subscribe";
-        public static final String MAILING_LIST_CHECK_IF_SUB = MAILING_LIST + "/checkIfSubscribe";
-        public static final String MAILING_LIST_UNSUB = MAILING_LIST + "/unsubscribe";
         public static final String USERS_PATH = "/user";
         public static final String REGISTER = USERS_PATH + "/register";
         public static final String REGISTRATION_CONFIRM = USERS_PATH + "/registrationConfirm";
@@ -56,5 +53,12 @@ public interface SoknDefinitions {
         public static final String PASS_CHANGE_ROLE = "PASS_CHANGE";
 
         private Roles() {}
+    }
+
+    class AuthorizationHelper {
+        public static final String AUTHORIZATION = "Authorization";
+        public static final String BEARER = "Bearer ";
+
+        private AuthorizationHelper() {}
     }
 }

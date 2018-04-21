@@ -13,7 +13,6 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_EMPTY)
 @ApiModel(value = "MailingList")
 public class MailingListDTO implements Serializable{
     private static final long serialVersionUID = 8776349597526644335L;
