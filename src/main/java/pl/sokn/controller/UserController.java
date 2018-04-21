@@ -18,8 +18,6 @@ import pl.sokn.dto.UserDTO;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
 import pl.sokn.service.UserService;
-import pl.sokn.service.helper.SendEmailService;
-import pl.sokn.service.implementation.UserServiceImpl;
 
 @Api(tags = "User")
 @RestController
