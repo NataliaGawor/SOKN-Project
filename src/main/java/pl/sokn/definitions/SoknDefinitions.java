@@ -8,6 +8,10 @@ public interface SoknDefinitions {
     class Api {
         public static final String LOGIN = "/login";
         public static final String REFRESH = "/refresh";
+        public static final String MAILING_LIST = "/mailingList";
+        public static final String MAILING_LIST_SUB = MAILING_LIST + "/subscribe";
+        public static final String MAILING_LIST_CHECK_IF_SUB = MAILING_LIST + "/checkIfSubscribe";
+        public static final String MAILING_LIST_UNSUB = MAILING_LIST + "/unsubscribe";
         public static final String USERS_PATH = "/user";
         public static final String REGISTER = USERS_PATH + "/register";
         public static final String REGISTRATION_CONFIRM = USERS_PATH + "/registrationConfirm";
@@ -27,7 +31,8 @@ public interface SoknDefinitions {
         public static final String EMAIL_CONFIRMED = "Email został pomyślnie potwierdzony";
         public static final String P_UPDATED_SUCCESSFULLY = "Hasło zostało pomyślnie zaktualizowane";
         public static final String TOKEN_IS_VALID = "Token jest prawidłowy";
-
+        public static final String NOT_SUBSCRIBED = "Twojego adresu email nie ma jeszcze na naszej liście.";
+        public static final String SUBSCRIBED = "Twój adres email już znajduje się na naszej liście.";
         private ApiMessages() {}
     }
 
@@ -39,7 +44,8 @@ public interface SoknDefinitions {
         public static final String INVALID_OLD_P = "Nieprawidłowe stare hasło";
         public static final String P_ARE_THE_SAME = "Twoje nowe i stare hasła nie mogą być takie same";
         public static final String P_CHANGE_NOT_ALLOWED = "Nie masz uprawnień do zmiany hasła";
-
+        public static final String EMAIL_ALREADY_SUBSCRIBED = "Nie możesz zapisać się na listę, ponieważ już na niej jesteś.";
+        public static final String CANNOT_UNSUBSCRIBE = "Nie można usunąć tego adresu, ponieważ nie ma go na liście.";
         private ErrorMessages() {}
     }
 
