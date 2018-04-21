@@ -64,6 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Api.RESEND_FORGOT_PASSWORD + "/**",
                         Api.RESET_PASSWORD + "/**",
                         Api.CHECK_IF_REGISTERED+"/**",
+                        Api.SEND_CONTACT_EMAIL+"/**",
                         Api.MAILING_LIST + "/**",
                         "/documentation/**",
                         "/swagger-resources/**",
