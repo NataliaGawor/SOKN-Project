@@ -4,6 +4,7 @@ import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.sokn.dto.EmailMessage;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
 import pl.sokn.repository.PasswordResetTokenRepository;
@@ -63,5 +64,15 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
                     "Aby sie zarejestrowac kliknij--><a href="+url+"/CustomUser/registration/registration.html"+">Rejestracja</a>");
         }
         return user;
+    }
+
+    //Send Email to sokn.noreply
+    @Override
+    public void sendEmail(final EmailMessage emailDTO, final HttpServletRequest request)throws OperationException{
+        String email=emailDTO.getEmail();
+        String subject = emailDTO.getName();
+        String message = emailDTO.getText();
+
+        sendEmailService.sendSimpleMessage("sokn.noreply@gmail.com",subject,"E-mail from: "+ email+"<br/>"+message);
     }
 }

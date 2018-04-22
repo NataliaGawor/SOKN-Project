@@ -87,7 +87,6 @@ public class RegistrationController {
     }
 
     /**
-     *
      * @param token that was sent in email after registration
      * @return 201 status and confirmation message
      * @throws OperationException when token expired or is invalid
@@ -102,8 +101,7 @@ public class RegistrationController {
     }
 
     /**
-     *
-     * @param email fulfilled by form on "forgot  password" page
+     * @param email   fulfilled by form on "forgot  password" page
      * @param request - IP address etc.
      * @return json with token, and some user's details
      */
@@ -118,6 +116,7 @@ public class RegistrationController {
 
     /**
      * Same functionality as:
+     *
      * @see RegistrationController#resendRegistrationToken(String, HttpServletRequest)
      */
     @ApiOperation(value = "Resend the forgot password token")
@@ -133,7 +132,7 @@ public class RegistrationController {
      * JavaScript sends this data after user clicks on the forgot password's link
      *
      * @param userId of user that forgot password
-     * @param token variable in the path sent to email
+     * @param token  variable in the path sent to email
      * @return 201 status if token is valid
      * @throws OperationException when token is invalid or expired
      */
@@ -148,6 +147,7 @@ public class RegistrationController {
 
     /**
      * After clicking the link in the email user is redirected to new page where he must enter new password
+     *
      * @param passwordCreate new password for user
      * @return 200 status with message if is ok
      * @throws OperationException when user is not allowed to change password
@@ -155,13 +155,14 @@ public class RegistrationController {
     @ApiOperation(value = "Option available on \"Provide new password\" page. User enters a new password")
     @PostMapping(value = "/resetPassword", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity resetPassword(@RequestBody @Valid final PasswordCreate passwordCreate) throws OperationException {
-            registrationService.resetUserPassword(passwordCreate);
+        registrationService.resetUserPassword(passwordCreate);
 
         return ResponseEntity.ok().body(new CustomResponseMessage<>(HttpStatus.OK, ApiMessages.P_UPDATED_SUCCESSFULLY));
     }
 
     /**
      * Option available for authenticated users only
+     *
      * @param passwordUpdate old password and new password sent from the form
      */
     @ApiOperation(value = "Option available for logged in user who just want update a password")
