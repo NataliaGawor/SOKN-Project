@@ -5,10 +5,12 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import pl.sokn.entity.Authority;
+import pl.sokn.entity.FieldOfArticle;
 import pl.sokn.entity.User;
 import pl.sokn.enums.Gender;
 import pl.sokn.exception.OperationException;
 import pl.sokn.service.AuthorityService;
+import pl.sokn.service.FieldOfArticleService;
 import pl.sokn.service.UserService;
 
 import javax.transaction.Transactional;
@@ -26,20 +28,21 @@ public class DataLoader implements ApplicationRunner {
 
     private final AuthorityService authorityService;
     private final UserService userService;
+    private final FieldOfArticleService fieldOfArticleService;
 
     @Autowired
     public DataLoader(AuthorityService authorityService,
-                      @pl.sokn.annotation.qualifier.UserService UserService userService) {
+                      @pl.sokn.annotation.qualifier.UserService UserService userService,
+                     FieldOfArticleService fieldOfArticleService) {
         this.authorityService = authorityService;
         this.userService = userService;
+        this.fieldOfArticleService=fieldOfArticleService;
     }
 
     @Override
     @Transactional
     public void run(ApplicationArguments args) throws OperationException {
-
         createUsers();
-
     }
 
     private void createUsers() throws OperationException {
@@ -56,12 +59,12 @@ public class DataLoader implements ApplicationRunner {
         final User user = User.builder()
                 .firstName("First")
                 .lastName("User")
-                .email("author@email.com")
+                .email("prelegent@email.com")
                 .enabled(true)
                 .password(PASSWORD)
                 .degree("Mgr")
                 .gender(Gender.MALE)
-                .affiliation("Single")
+                .affiliation("Singiel")
                 .city(KRAKOW)
                 .country(POLAND)
                 .authorities(Set.of(authorRole))
@@ -93,12 +96,24 @@ public class DataLoader implements ApplicationRunner {
                 .password(PASSWORD)
                 .degree("Doctor")
                 .gender(Gender.MALE)
-                .affiliation("Żonaty")
+                .affiliation("Married")
                 .city(KRAKOW)
                 .country(POLAND)
                 .authorities(Set.of(reviewerRole, authorRole))
                 .build();
 
         userService.save(reviewer);
+
+        final FieldOfArticle fieldOne=FieldOfArticle.builder()
+                .field("Systemy Wbudowane")
+                .build();
+
+        fieldOfArticleService.save(fieldOne);
+
+        final FieldOfArticle fieldTwo=FieldOfArticle.builder()
+                .field("Sztuczna Inteligencja")
+                .build();
+
+        fieldOfArticleService.save(fieldTwo);
     }
 }
