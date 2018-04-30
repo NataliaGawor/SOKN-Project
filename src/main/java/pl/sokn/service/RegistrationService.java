@@ -19,7 +19,7 @@ public interface RegistrationService extends UserService {
 
     VerificationToken generateNewVerificationToken(final String existingVerificationToken, HttpServletRequest request) throws OperationException;
 
-    PasswordResetToken createPasswordResetTokenForUser(String email, HttpServletRequest request);
+    PasswordResetToken createPasswordResetTokenForUser(String email, HttpServletRequest request) throws OperationException;
 
     String sendForgotPasswordEmail(PasswordResetToken pToken, HttpServletRequest request) throws OperationException;
 
