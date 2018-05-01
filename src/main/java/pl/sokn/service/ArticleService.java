@@ -1,4 +1,6 @@
 package pl.sokn.service;
 
-public interface ArticleService {
+import pl.sokn.entity.Article;
+
+public interface ArticleService extends GenericService<Article,Long>{
 }
