@@ -90,7 +90,7 @@ public class SendEmailServiceImpl implements SendEmailService {
         final String recipientAddress = user.getEmail();
         final String subject = "Reset hasła";
         final String confirmationUrl
-                = contextPath + "/user/reset/confirm.html?id=" + user.getId() + "?token=" + token;
+                = contextPath + "/user/password/reset/confirm.html?id=" + user.getId() + "&token=" + token;
         final String message = "Potwierdz reset hasla: \n" +
                 "<a href=" + confirmationUrl + ">Reset hasla</a>";
 

@@ -21,6 +21,7 @@ import pl.sokn.service.helper.SendEmailService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -32,7 +33,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
                                    TokenRepository tokenRepository,
                                    PasswordResetTokenRepository passwordResetTokenRepository,
                                    SendEmailService sendEmailService) {
-        super(userRepository, authorityService, passwordEncoder, tokenRepository, passwordResetTokenRepository,sendEmailService);
+        super(userRepository, authorityService, passwordEncoder, tokenRepository, passwordResetTokenRepository, sendEmailService);
     }
 
     @Override
@@ -112,9 +113,11 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     @Override
-    public PasswordResetToken createPasswordResetTokenForUser(String email, HttpServletRequest request) {
-        final User user = retrieveByEmail(email);
-        //if exists
+    public PasswordResetToken createPasswordResetTokenForUser(String email, HttpServletRequest request) throws OperationException {
+
+        final User user = Optional.ofNullable(retrieveByEmail(email))
+                .orElseThrow(() -> new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.USER_DOES_NOT_EXISTS));
+
         final String token = UUID.randomUUID().toString();
         final PasswordResetToken myToken = new PasswordResetToken(token, user);
         user.setEnabled(false);
