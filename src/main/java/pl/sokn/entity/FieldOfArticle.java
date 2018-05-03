@@ -34,6 +34,4 @@ public class FieldOfArticle {
     public FieldOfArticle(String field) {
         this.field = field;
     }
-
-
 }

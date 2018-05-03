@@ -6,8 +6,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-import static com.google.common.collect.Sets.newHashSet;
-
 /**
  * Class with @Entity annotation will be generated in the database as a table
  */
@@ -31,11 +29,16 @@ public class Article {
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 
-    public Article(String subject, String pathFile, int gradeStatus) {
+    @ManyToOne(targetEntity = FieldOfArticle.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false,name="field_id")
+    private FieldOfArticle fieldOfArticle;
+
+    public Article(String subject, String pathFile, int gradeStatus, User user, FieldOfArticle fieldOfArticle) {
         this.subject = subject;
         this.pathFile = pathFile;
         this.gradeStatus = gradeStatus;
+        this.user = user;
+        this.fieldOfArticle = fieldOfArticle;
     }
-
 
 }

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import pl.sokn.exception.OperationException;
+import pl.sokn.security.information.AuthenticationFacade;
 import pl.sokn.service.ArticleService;
 
 @Api(tags = "Article")
@@ -17,17 +18,20 @@ import pl.sokn.service.ArticleService;
 @RequestMapping(path="/article")
 public class ArticleController {
    private ArticleService articleService;
+   private AuthenticationFacade authenticationFacade;
 
    @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService,AuthenticationFacade authenticationFacade) {
         this.articleService = articleService;
+        this.authenticationFacade=authenticationFacade;
     }
 
     @PostMapping(path="/uploadArticle")
     public ResponseEntity uploadArticle(@RequestParam("file") MultipartFile file,
                                            @RequestParam("subject") String subjectId,
                                            @RequestParam("fieldOfArticle") String fieldOfArticle) throws OperationException {
-       articleService.uploadArticle(file,subjectId,fieldOfArticle);
+       String email = authenticationFacade.getAuthentication().getName();
+       articleService.uploadArticle(email,file,subjectId,fieldOfArticle);
        return ResponseEntity.ok(HttpStatus.OK);
     }
 }
