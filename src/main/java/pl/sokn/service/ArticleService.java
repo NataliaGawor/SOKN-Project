@@ -7,5 +7,6 @@ import pl.sokn.exception.OperationException;
 public interface ArticleService extends GenericService<Article,Long>{
     void checkFile(MultipartFile file) throws OperationException;
     void uploadArticle(String email,MultipartFile file,String subject,String fieldOfArticle) throws OperationException;
-    void saveFile(MultipartFile file) throws OperationException;
+    void saveFile(MultipartFile file,Long id) throws OperationException;
+    void checkArticle(String article) throws OperationException;
 }

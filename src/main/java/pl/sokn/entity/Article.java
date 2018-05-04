@@ -3,6 +3,7 @@ package pl.sokn.entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -13,6 +14,7 @@ import javax.persistence.*;
 @Builder
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class Article {
 
     @Id
@@ -40,5 +42,4 @@ public class Article {
         this.user = user;
         this.fieldOfArticle = fieldOfArticle;
     }
-
 }

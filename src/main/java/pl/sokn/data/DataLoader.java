@@ -59,7 +59,7 @@ public class DataLoader implements ApplicationRunner {
         final User user = User.builder()
                 .firstName("First")
                 .lastName("User")
-                .email("prelegent@email.com")
+                .email("author@email.com")
                 .enabled(true)
                 .password(PASSWORD)
                 .degree("Mgr")
