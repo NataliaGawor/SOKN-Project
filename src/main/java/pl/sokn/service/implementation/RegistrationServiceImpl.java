@@ -17,6 +17,7 @@ import pl.sokn.repository.TokenRepository;
 import pl.sokn.repository.UserRepository;
 import pl.sokn.service.AuthorityService;
 import pl.sokn.service.RegistrationService;
+import pl.sokn.service.helper.PasswordGenerator;
 import pl.sokn.service.helper.SendEmailService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,9 +41,9 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     public User save(final User user) throws OperationException {
         checkIfUserExists(user);
 
-        final Authority defaultRole = authorityService.retrieve(Roles.DEFAULT_ROLE);
+        final Authority defaultRole[] = new Authority[]{authorityService.retrieve(Roles.DEFAULT_ROLE)};
 
-        return saveUser(user, defaultRole);
+        return saveUser(user, defaultRole, false);
     }
 
     private void checkIfUserExists(final User user) throws OperationException {
@@ -51,18 +52,36 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
         }
     }
 
-    private User saveUser(final User entity, final Authority role) {
-        // new users are disabled
-        entity.setEnabled(false);
+    private User saveUser(final User entity, final Authority roles[], final boolean enabled) {
+        // new users that are only authors are disabled
+        entity.setEnabled(enabled);
         // encode password
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 
         // add role for user
         // in this case spring inserts user and role's id into user_authorities table
-        entity.getAuthorities().add(role);
+        for (Authority role: roles)
+            entity.getAuthorities().add(role);
 
         // save user in database and return entity with id
         return userRepository.save(entity);
+    }
+
+    @Override
+    public User saveReviewer(User user) throws OperationException {
+        checkIfUserExists(user);
+
+        String password = PasswordGenerator.getPass(10);
+        final Authority roles[] = new Authority[]{authorityService.retrieve(Roles.DEFAULT_ROLE),  authorityService.retrieve(Roles.REVIEWER_ROLE)};
+
+        user.setPassword(password);
+        // save user with roles author and reviewer, set user as enabled
+        saveUser(user, roles, true);
+
+        // if saved successfully then send an email with password
+        emailService.constructReviewerRegistrationEmail(user.getEmail(), password);
+
+        return user;
     }
 
     @Override

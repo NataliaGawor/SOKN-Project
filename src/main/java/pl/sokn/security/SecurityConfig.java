@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Api.LOGIN,
                         Api.REFRESH,
                         Api.REGISTER + "/**",
+                        "/user/registerReviewer",
                         Api.REGISTRATION_CONFIRM + "/**",
                         Api.RESEND_REGISTRATION_TOKEN + "/**",
                         Api.CHANGE_PASSWORD + "/**",

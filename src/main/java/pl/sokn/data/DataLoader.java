@@ -93,7 +93,7 @@ public class DataLoader implements ApplicationRunner {
                 .password(PASSWORD)
                 .degree("Doctor")
                 .gender(Gender.MALE)
-                .affiliation("Żonaty")
+                .affiliation("zonaty")
                 .city(KRAKOW)
                 .country(POLAND)
                 .authorities(Set.of(reviewerRole, authorRole))

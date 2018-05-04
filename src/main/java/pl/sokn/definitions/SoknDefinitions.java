@@ -29,8 +29,6 @@ public interface SoknDefinitions {
         public static final String EMAIL_CONFIRMED = "Email został pomyślnie potwierdzony";
         public static final String P_UPDATED_SUCCESSFULLY = "Hasło zostało pomyślnie zaktualizowane";
         public static final String TOKEN_IS_VALID = "Token jest prawidłowy";
-        public static final String NOT_SUBSCRIBED = "Twojego adresu email nie ma jeszcze na naszej liście.";
-        public static final String SUBSCRIBED = "Twój adres email już znajduje się na naszej liście.";
         private ApiMessages() {}
     }
 
@@ -50,6 +48,7 @@ public interface SoknDefinitions {
     class Roles {
         public static final String DEFAULT_ROLE = "AUTHOR";
         public static final String ADMIN_ROLE = "ADMIN";
+        public static final String REVIEWER_ROLE = "REVIEWER";
         public static final String PASS_CHANGE_ROLE = "PASS_CHANGE";
 
         private Roles() {}
