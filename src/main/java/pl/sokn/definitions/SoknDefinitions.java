@@ -19,6 +19,8 @@ public interface SoknDefinitions {
         public static final String RESEND_FORGOT_PASSWORD = USERS_PATH + "/resendPasswordToken";
         public static final String CHECK_IF_REGISTERED=USERS_PATH+"/checkIfRegistered";
         public static final String SEND_CONTACT_EMAIL=USERS_PATH+"/sendContactEmail";
+        public static final String FIELDS_OF_ARTICLES="/fieldsOfArticles";
+        public static final String GET_ALL_FIELDS_OF_ARTICLES=FIELDS_OF_ARTICLES+"/getAll";
 
         private Api() {}
     }
