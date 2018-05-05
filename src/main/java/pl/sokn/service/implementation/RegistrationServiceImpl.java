@@ -7,15 +7,13 @@ import pl.sokn.definitions.SoknDefinitions.ErrorMessages;
 import pl.sokn.definitions.SoknDefinitions.Roles;
 import pl.sokn.dto.PasswordCreate;
 import pl.sokn.dto.PasswordUpdate;
-import pl.sokn.entity.Authority;
-import pl.sokn.entity.PasswordResetToken;
-import pl.sokn.entity.User;
-import pl.sokn.entity.VerificationToken;
+import pl.sokn.entity.*;
 import pl.sokn.exception.OperationException;
 import pl.sokn.repository.PasswordResetTokenRepository;
 import pl.sokn.repository.TokenRepository;
 import pl.sokn.repository.UserRepository;
 import pl.sokn.service.AuthorityService;
+import pl.sokn.service.FieldOfArticleService;
 import pl.sokn.service.RegistrationService;
 import pl.sokn.service.helper.PasswordGenerator;
 import pl.sokn.service.helper.SendEmailService;
@@ -23,6 +21,7 @@ import pl.sokn.service.helper.SendEmailService;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -30,11 +29,12 @@ import java.util.UUID;
 public class RegistrationServiceImpl extends UserServiceImpl implements RegistrationService {
     public RegistrationServiceImpl(UserRepository userRepository,
                                    AuthorityService authorityService,
+                                   FieldOfArticleService fieldOfArticleService,
                                    PasswordEncoder passwordEncoder,
                                    TokenRepository tokenRepository,
                                    PasswordResetTokenRepository passwordResetTokenRepository,
                                    SendEmailService sendEmailService) {
-        super(userRepository, authorityService, passwordEncoder, tokenRepository, passwordResetTokenRepository, sendEmailService);
+        super(userRepository, authorityService, fieldOfArticleService, passwordEncoder, tokenRepository, passwordResetTokenRepository, sendEmailService);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     }
 
     @Override
-    public User saveReviewer(User user) throws OperationException {
+    public void saveReviewer(User user) throws OperationException {
         checkIfUserExists(user);
 
         String password = PasswordGenerator.getPass(10);
@@ -80,8 +80,6 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
 
         // if saved successfully then send an email with password
         emailService.constructReviewerRegistrationEmail(user.getEmail(), password);
-
-        return user;
     }
 
     @Override

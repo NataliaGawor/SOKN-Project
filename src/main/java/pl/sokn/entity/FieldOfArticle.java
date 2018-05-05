@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.sokn.dto.FieldOfArticleDTO;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -25,13 +26,25 @@ public class FieldOfArticle {
 
     private String field;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(name = "user_field",
-            joinColumns = {@JoinColumn(name = "field_id", referencedColumnName = "id_field")},
-            inverseJoinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id_user")})
-    private Set<User> user;
+    public static FieldOfArticle convertFrom(final FieldOfArticleDTO dto) {
+        if (dto == null)
+            return null;
 
-    public FieldOfArticle(String field) {
-        this.field = field;
+        final FieldOfArticle roleImpl = new FieldOfArticle();
+        roleImpl.setId(dto.getId());
+        roleImpl.setField(dto.getField());
+
+        return roleImpl;
+    }
+
+    public static FieldOfArticleDTO convertTo(final FieldOfArticle entity) {
+        if (entity == null)
+            return null;
+
+        final FieldOfArticleDTO roleImpl = new FieldOfArticleDTO();
+        roleImpl.setId(entity.getId());
+        roleImpl.setField(entity.getField());
+
+        return roleImpl;
     }
 }

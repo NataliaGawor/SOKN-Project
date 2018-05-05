@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import pl.sokn.dto.AuthorityDTO;
+import pl.sokn.dto.FieldOfArticleDTO;
 import pl.sokn.dto.UserDTO;
 import pl.sokn.enums.Gender;
 
@@ -54,9 +55,16 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id_authority")})
     private Set<Authority> authorities;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinTable(name = "user_field",
+            joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id_user")},
+            inverseJoinColumns = {@JoinColumn(name = "field_id", referencedColumnName = "id_field")})
+    private Set<FieldOfArticle> fieldOfArticles;
+
     public User() {
         this.enabled = false;
         this.authorities = newHashSet();
+        this.fieldOfArticles = newHashSet();
     }
 
     public static User convertFrom(final UserDTO dto) {
@@ -78,6 +86,8 @@ public class User {
         user.setEnabled(dto.getEnabled());
         final Set<AuthorityDTO> roles = Optional.ofNullable(dto.getAuthorities()).orElse(Set.of());
         roles.forEach(i -> user.getAuthorities().add(Authority.convertFrom(i)));
+        final Set<FieldOfArticleDTO> fields = Optional.ofNullable(dto.getFieldOfArticles()).orElse(Set.of());
+        fields.forEach(i -> user.getFieldOfArticles().add(FieldOfArticle.convertFrom(i)));
 
         return user;
     }
@@ -100,6 +110,8 @@ public class User {
         user.setEnabled(entity.getEnabled());
         final Set<Authority> roles = Optional.ofNullable(entity.getAuthorities()).orElse(Set.of());
         roles.forEach(i -> user.getAuthorities().add(AuthorityDTO.builder().id(i.getId()).role(i.getRole()).build()));
+        final Set<FieldOfArticle> fields = Optional.ofNullable(entity.getFieldOfArticles()).orElse(Set.of());
+        fields.forEach(i -> user.getFieldOfArticles().add(FieldOfArticleDTO.builder().id(i.getId()).field(i.getField()).build()));
 
         return user;
     }

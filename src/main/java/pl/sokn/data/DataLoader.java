@@ -56,6 +56,11 @@ public class DataLoader implements ApplicationRunner {
         final Authority passChangeRole = Authority.builder().role("PASS_CHANGE").build();
         authorityService.save(passChangeRole);
 
+        final FieldOfArticle fieldOne=FieldOfArticle.builder().field("Systemy Wbudowane").build();
+        fieldOfArticleService.save(fieldOne);
+        final FieldOfArticle fieldTwo=FieldOfArticle.builder().field("Sztuczna Inteligencja").build();
+        fieldOfArticleService.save(fieldTwo);
+
         final User user = User.builder()
                 .firstName("First")
                 .lastName("User")
@@ -100,20 +105,11 @@ public class DataLoader implements ApplicationRunner {
                 .city(KRAKOW)
                 .country(POLAND)
                 .authorities(Set.of(reviewerRole, authorRole))
+                .fieldOfArticles(Set.of(fieldOne, fieldTwo))
                 .build();
 
         userService.save(reviewer);
 
-        final FieldOfArticle fieldOne=FieldOfArticle.builder()
-                .field("Systemy Wbudowane")
-                .build();
 
-        fieldOfArticleService.save(fieldOne);
-
-        final FieldOfArticle fieldTwo=FieldOfArticle.builder()
-                .field("Sztuczna Inteligencja")
-                .build();
-
-        fieldOfArticleService.save(fieldTwo);
     }
 }

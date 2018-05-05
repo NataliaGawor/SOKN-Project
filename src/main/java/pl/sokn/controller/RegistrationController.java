@@ -66,14 +66,11 @@ public class RegistrationController {
 
     @ApiOperation(value = "Reviewer registration")
     @PostMapping(path = "/registerReviewer", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity registerReviewer(@RequestBody ReviewerDTO reviewerDTO,
+    public ResponseEntity registerReviewer(@RequestBody UserDTO user,
                                        final HttpServletRequest request) throws OperationException {
-        // save reviewer as normal user in database if is not already registered
-        final User registered = registrationService.saveReviewer(convertToEntity(reviewerDTO));
-        // add fields of article
+        registrationService.saveReviewer(convertToEntity(user));
 
-        String json = "";
-        return ResponseEntity.status(HttpStatus.CREATED).body(json);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CustomResponseMessage<>(HttpStatus.CREATED,""));
     }
 
     /**
