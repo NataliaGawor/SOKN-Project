@@ -100,8 +100,8 @@ public class SendEmailServiceImpl implements SendEmailService {
     public void constructReviewerRegistrationEmail(final String to, String password) throws OperationException {
         final String recipientAddress = to;
         final String subject = "Utworzono konto recenzenta";
-        final String message = "W systemmie SOKN utworzono dla Ciebie konto recenzenta\nTwoje dane do logowania: \n" +
-                                "login: " + to + "\nhaslo: " + password + "\nPamietaj aby zmienic haslo zaraz po zalogowaniu";
+        final String message = "<p>W systemmie SOKN utworzono dla Ciebie konto recenzenta.</p><p>Twoje dane do logowania: </p>" +
+                                "<p>login: " + to + "</p>" + "<p>haslo: " + password + "</p><p>Pamietaj aby zmienic haslo zaraz po zalogowaniu</p>";
 
         sendSimpleMessage(recipientAddress, subject, message);
     }

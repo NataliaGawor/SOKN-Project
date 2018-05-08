@@ -71,7 +71,7 @@ public class RegistrationServiceImpl extends UserServiceImpl implements Registra
     public void saveReviewer(User user) throws OperationException {
         checkIfUserExists(user);
 
-        String password = PasswordGenerator.getPass(10);
+        String password = PasswordGenerator.get(10);
         final Authority roles[] = new Authority[]{authorityService.retrieve(Roles.DEFAULT_ROLE),  authorityService.retrieve(Roles.REVIEWER_ROLE)};
 
         user.setPassword(password);
