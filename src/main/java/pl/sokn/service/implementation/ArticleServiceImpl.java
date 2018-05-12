@@ -50,7 +50,7 @@ public class ArticleServiceImpl extends AbstractGenericService<Article,Long> imp
             throw new OperationException(HttpStatus.NOT_ACCEPTABLE,"Plik musi być w formacie pdf,docx lub txt");
 
         if(!fileName.substring(0,fileName.lastIndexOf(".")).matches("[a-zA-Z0-9]*"))
-            throw new OperationException(HttpStatus.NOT_ACCEPTABLE,"Nazwa pliku może zawierać znaki alfanumeryczne(brak spacji).");
+            throw new OperationException(HttpStatus.NOT_ACCEPTABLE,"Nazwa pliku może zawierać wyłącznie litery i liczby.");
     }
 
     @Override

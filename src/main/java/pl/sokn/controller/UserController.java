@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.sokn.definitions.SoknDefinitions;
 import pl.sokn.dto.CustomResponseMessage;
 import pl.sokn.dto.EmailMessage;
@@ -42,9 +39,8 @@ public class UserController extends AbstractGenericController<UserDTO, User, Lon
     }
 
     @ApiOperation(value = "Check if person is registered")
-    @PostMapping(path="/checkIfRegistered",consumes= MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path="/checkIfRegistered",consumes= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity checkIfRegistered(@RequestBody String email, final HttpServletRequest request) throws OperationException {
-
         return ResponseEntity.ok(userService.isUserInDB(email,request));
     }
 
