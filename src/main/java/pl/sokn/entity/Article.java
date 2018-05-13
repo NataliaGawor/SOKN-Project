@@ -25,7 +25,7 @@ public class Article {
     private String subject;
     private String pathFile;
     private int gradeStatus;
-
+    private String comments;
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")

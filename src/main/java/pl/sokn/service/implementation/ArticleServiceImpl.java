@@ -18,6 +18,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -92,6 +93,11 @@ public class ArticleServiceImpl extends AbstractGenericService<Article,Long> imp
 
         if(articleRepository.findBySubject(article)!=null)
             throw new OperationException(HttpStatus.NOT_ACCEPTABLE,"Artykuł o podanej nazwie został już dodany.");
+    }
+
+    @Override
+    public List<Article> getAllAuthorArticle(String email){
+        return articleRepository.findByUser(userRepository.findByEmail(email));
     }
 }
 

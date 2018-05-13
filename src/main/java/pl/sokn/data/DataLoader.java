@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import pl.sokn.entity.Article;
 import pl.sokn.entity.Authority;
 import pl.sokn.entity.FieldOfArticle;
 import pl.sokn.entity.User;
 import pl.sokn.enums.Gender;
 import pl.sokn.exception.OperationException;
+import pl.sokn.service.ArticleService;
 import pl.sokn.service.AuthorityService;
 import pl.sokn.service.FieldOfArticleService;
 import pl.sokn.service.UserService;
@@ -29,14 +31,16 @@ public class DataLoader implements ApplicationRunner {
     private final AuthorityService authorityService;
     private final UserService userService;
     private final FieldOfArticleService fieldOfArticleService;
+    private final ArticleService articleService;
 
     @Autowired
     public DataLoader(AuthorityService authorityService,
                       @pl.sokn.annotation.qualifier.UserService UserService userService,
-                     FieldOfArticleService fieldOfArticleService) {
+                     FieldOfArticleService fieldOfArticleService,ArticleService articleService) {
         this.authorityService = authorityService;
         this.userService = userService;
         this.fieldOfArticleService=fieldOfArticleService;
+        this.articleService=articleService;
     }
 
     @Override
@@ -115,5 +119,25 @@ public class DataLoader implements ApplicationRunner {
                 .build();
 
         fieldOfArticleService.save(fieldTwo);
+
+        final Article articleOne=Article.builder()
+                .subject("Dynamika")
+                .pathFile("/uploadFiles/dyn.txt")
+                .user(user)
+                .fieldOfArticle(fieldOne)
+                .comments("Słaby")
+                .build();
+
+         articleService.save(articleOne);
+
+        final Article articleTwo=Article.builder()
+                .subject("Fizyka")
+                .pathFile("/uploadFiles/fiz.txt")
+                .user(user)
+                .fieldOfArticle(fieldOne)
+                .comments("Słaby")
+                .build();
+
+        articleService.save(articleTwo);
     }
 }

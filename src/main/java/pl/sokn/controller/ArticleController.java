@@ -1,13 +1,12 @@
 package pl.sokn.controller;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.sokn.exception.OperationException;
 import pl.sokn.security.information.AuthenticationFacade;
@@ -25,7 +24,7 @@ public class ArticleController {
         this.articleService = articleService;
         this.authenticationFacade=authenticationFacade;
     }
-
+    @ApiOperation(value = "add Article")
     @PostMapping(path="/uploadArticle")
     public ResponseEntity uploadArticle(@RequestParam("file") MultipartFile file,
                                            @RequestParam("subject") String subjectId,
@@ -33,5 +32,11 @@ public class ArticleController {
        String email = authenticationFacade.getAuthentication().getName();
        articleService.uploadArticle(email,file,subjectId,fieldOfArticle);
        return ResponseEntity.ok(HttpStatus.OK);
+    }
+    @ApiOperation(value = "Get all articles")
+    @GetMapping(path="/getAllArticles",produces= MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllArticle(){
+       String email = authenticationFacade.getAuthentication().getName();
+       return ResponseEntity.ok(articleService.getAllAuthorArticle(email));
     }
 }
