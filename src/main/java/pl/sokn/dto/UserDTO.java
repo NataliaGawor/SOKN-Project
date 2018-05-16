@@ -85,9 +85,21 @@ public class UserDTO implements Serializable {
 
     private Boolean enabled;
     private Set<AuthorityDTO> authorities;
+    @ApiModelProperty(required = true, position = 12, example = "[\n" +
+            "    {\n" +
+            "      \"id\": 0,\n" +
+            "      \"field\": \"Sztuczna Inteligencja\"\n" +
+            "    },\n" +
+            "    {\n" +
+            "      \"id\": 1,\n" +
+            "      \"field\": \"Systemy Wbudowane\"\n" +
+            "    }\n" +
+            "  ]")
+    private Set<FieldOfArticleDTO> fieldOfArticles;
 
     public UserDTO() {
         this.enabled = false;
         this.authorities = newHashSet();
+        this.fieldOfArticles = newHashSet();
     }
 }

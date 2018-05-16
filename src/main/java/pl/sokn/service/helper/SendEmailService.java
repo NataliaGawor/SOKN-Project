@@ -19,4 +19,6 @@ public interface SendEmailService {
     void constructRegistrationEmail(final String contextPath, final String token, final User user) throws OperationException;
 
     void constructForgotPasswordTokenEmail(final String contextPath, final String token, final User user) throws OperationException;
+
+    void constructReviewerRegistrationEmail(final String to, String password) throws OperationException;
 }
