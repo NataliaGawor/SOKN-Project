@@ -87,25 +87,29 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
 
     @Override
     public void addReviewerAuthority(String email, String fieldObligatory, String fieldAdditional) throws OperationException {
-
         User user = retrieveByEmail(email);
-
+        //check if user exist
         if(user != null){
             Authority role = authorityService.retrieve(Roles.REVIEWER_ROLE);
-            FieldOfArticle field = fieldOfArticleService.retrieveByField(fieldObligatory);
+            // check if user have reviewer role
+            if(!user.getAuthorities().contains(role)){
+                FieldOfArticle field = fieldOfArticleService.retrieveByField(fieldObligatory);
 
-            user.getAuthorities().add(role);
-            user.getFieldOfArticles().add(field);
-
-            if(fieldAdditional != null && !fieldAdditional.equals(fieldObligatory)){
-                field = fieldOfArticleService.retrieveByField(fieldAdditional);
+                user.getAuthorities().add(role);
                 user.getFieldOfArticles().add(field);
-            }
 
-            update(user);
+                if(fieldAdditional != null){
+                    field = fieldOfArticleService.retrieveByField(fieldAdditional);
+                    user.getFieldOfArticles().add(field);
+                }
+                update(user);
+            }
+            else
+                throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.USER_ALREADY_HAS_AUTHORITY);
         }
-        else {
+        else
             throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.USER_DOES_NOT_EXISTS);
-        }
+
+        sendEmailService.constructAddReviewerAuthority(email);
     }
 }

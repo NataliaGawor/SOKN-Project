@@ -37,6 +37,7 @@ public interface SoknDefinitions {
     class ErrorMessages {
         public static final String USER_DOES_NOT_EXISTS = "Użytkownik nie istnieje";
         public static final String USER_ALREADY_EXISTS = "Użytkownik już istnieje w bazie danych";
+        public static final String USER_ALREADY_HAS_AUTHORITY = "Użytkownik już posiada uprawnienia";
         public static final String INVALID_TOKEN = "Wysłałeś nieprawidłowy token: ";
         public static final String TOKEN_EXPIRED = "Ważność Twojego tokena wygasła";
         public static final String INVALID_OLD_P = "Nieprawidłowe stare hasło";
