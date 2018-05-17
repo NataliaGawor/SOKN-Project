@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pl.sokn.definitions.SoknDefinitions;
 import pl.sokn.dto.CustomResponseMessage;
 import pl.sokn.dto.EmailMessage;
@@ -18,6 +15,8 @@ import pl.sokn.dto.UserDTO;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
 import pl.sokn.service.UserService;
+
+import java.util.Collection;
 
 @Api(tags = "User")
 @RestController
@@ -53,5 +52,14 @@ public class UserController extends AbstractGenericController<UserDTO, User, Lon
     public ResponseEntity sendContactEmail(@RequestBody EmailMessage emailDTO, final HttpServletRequest request) throws OperationException {
         userService.sendEmail(emailDTO,request);
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK,""));
+    }
+
+    @ApiOperation(value = "Add reviewer authority to existing account")
+    @PostMapping(path = "/addReviewerAuthority")
+    public ResponseEntity addReviewerAuthority(@RequestParam("email") String email,
+                                               @RequestParam("fieldObligatory") String fieldObligatory,
+                                               @RequestParam(value = "fieldAdditional", required = false) String fieldAdditional, final HttpServletRequest request) throws OperationException{
+        userService.addReviewerAuthority(email, fieldObligatory, fieldAdditional);
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK, ""));
     }
 }
