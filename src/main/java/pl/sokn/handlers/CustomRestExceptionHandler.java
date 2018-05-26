@@ -21,6 +21,7 @@ import pl.sokn.definitions.SoknDefinitions.ErrorMessages;
 import pl.sokn.dto.ErrorMessage;
 import pl.sokn.exception.OperationException;
 
+import java.io.IOException;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -35,6 +36,14 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleOperationException(final OperationException ex, final WebRequest request) {
         final ErrorMessage apiError =
                 new ErrorMessage(ex.getClass(), ex.getStatus(), newArrayList(ex.getLocalizedMessage()));
+        return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
+    }
+
+    @ExceptionHandler({IOException.class})
+    public ResponseEntity<Object> handleMalformedJwtException(final IOException ex) {
+        final ErrorMessage apiError =
+                new ErrorMessage(HttpStatus.BAD_REQUEST, "Błąd odczytu pliku z dysku");
+
         return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
     }
 

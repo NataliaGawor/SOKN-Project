@@ -9,6 +9,7 @@ public interface SoknDefinitions {
         public static final String LOGIN = "/login";
         public static final String REFRESH = "/refresh";
         public static final String MAILING_LIST = "/mailingList";
+        public static final String REVIEWER_PATH = "/reviewer";
         public static final String USERS_PATH = "/user";
         public static final String REGISTER = USERS_PATH + "/register";
         public static final String REGISTRATION_CONFIRM = USERS_PATH + "/registrationConfirm";
@@ -17,13 +18,16 @@ public interface SoknDefinitions {
         public static final String RESET_PASSWORD = USERS_PATH + "/resetPassword";
         public static final String FORGOT_PASSWORD = USERS_PATH + "/forgotPassword";
         public static final String RESEND_FORGOT_PASSWORD = USERS_PATH + "/resendPasswordToken";
-        public static final String CHECK_IF_REGISTERED=USERS_PATH+"/checkIfRegistered";
-        public static final String SEND_CONTACT_EMAIL=USERS_PATH+"/sendContactEmail";
-        public static final String FIELDS_OF_ARTICLES="/fieldsOfArticles";
-        public static final String GET_ALL_FIELDS_OF_ARTICLES=FIELDS_OF_ARTICLES+"/getAll";
+        public static final String CHECK_IF_REGISTERED = USERS_PATH + "/checkIfRegistered";
+        public static final String SEND_CONTACT_EMAIL = USERS_PATH + "/sendContactEmail";
+        public static final String ARTICLE_PATH = "/article";
+        public static final String FIELDS_OF_ARTICLES = "/fieldsOfArticles";
+        public static final String GET_ALL_FIELDS_OF_ARTICLES = FIELDS_OF_ARTICLES + "/getAll";
 
-        private Api() {}
+        private Api() {
+        }
     }
+
     class ApiMessages {
 
         public static final String REGISTRATION_TOKEN_SEND = "Email do {0} został wysłany.";
@@ -31,7 +35,9 @@ public interface SoknDefinitions {
         public static final String EMAIL_CONFIRMED = "Email został pomyślnie potwierdzony";
         public static final String P_UPDATED_SUCCESSFULLY = "Hasło zostało pomyślnie zaktualizowane";
         public static final String TOKEN_IS_VALID = "Token jest prawidłowy";
-        private ApiMessages() {}
+
+        private ApiMessages() {
+        }
     }
 
     class ErrorMessages {
@@ -45,7 +51,9 @@ public interface SoknDefinitions {
         public static final String P_CHANGE_NOT_ALLOWED = "Nie masz uprawnień do zmiany hasła";
         public static final String EMAIL_ALREADY_SUBSCRIBED = "Nie możesz zapisać się na listę, ponieważ już na niej jesteś.";
         public static final String CANNOT_UNSUBSCRIBE = "Nie można usunąć tego adresu, ponieważ nie ma go na liście.";
-        private ErrorMessages() {}
+
+        private ErrorMessages() {
+        }
     }
 
     class Roles {
@@ -54,13 +62,15 @@ public interface SoknDefinitions {
         public static final String REVIEWER_ROLE = "REVIEWER";
         public static final String PASS_CHANGE_ROLE = "PASS_CHANGE";
 
-        private Roles() {}
+        private Roles() {
+        }
     }
 
     class AuthorizationHelper {
         public static final String AUTHORIZATION = "Authorization";
         public static final String BEARER = "Bearer ";
 
-        private AuthorizationHelper() {}
+        private AuthorizationHelper() {
+        }
     }
 }
