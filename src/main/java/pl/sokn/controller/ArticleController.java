@@ -1,6 +1,7 @@
 package pl.sokn.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class ArticleController {
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @GetMapping(path = Api.REVIEWER_PATH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = Api.REVIEWER_PATH + "/article", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ArticleDTO>> getArticles() {
 
         final String email = authenticationFacade.getAuthentication().getName();
@@ -53,12 +54,12 @@ public class ArticleController {
                         .collect(Collectors.toList()));
     }
 
-    @GetMapping(path = Api.REVIEWER_PATH + "/{path}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @GetMapping(path = Api.REVIEWER_PATH + "/article/{path}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> getArticle(@PathVariable final String path) throws IOException {
         final byte[] bytes = articleService.retrieve(path);
 
         return ResponseEntity.status(200)
-                .header("Content-Disposition", "filename=" + path)
+                .header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + path)
                 .body(bytes);
     }
 }

@@ -27,6 +27,7 @@ import java.util.Set;
 public class DataLoader implements ApplicationRunner {
 
     private static final String SEPARATOR = File.separator;
+    private static final String UPLOADED_FOLDER = "uploadFiles" + SEPARATOR;
     private static final String PASSWORD = "{bcrypt}$2a$10$usFd.2lfQzOVG/N45uDr7emsFOenWpAtwjqmROMqevyqou/eG26rS";
     private static final String KRAKOW = "Kraków";
     private static final String POLAND = "Poland";
@@ -69,8 +70,8 @@ public class DataLoader implements ApplicationRunner {
         fieldOfArticleService.save(fieldTwo);
 
         final User user = User.builder()
-                .firstName("Author")
-                .lastName("User")
+                .firstName("Prelegent")
+                .lastName("Naziwsko")
                 .email("prelegent@email.com")
                 .enabled(true)
                 .password(PASSWORD)
@@ -85,8 +86,8 @@ public class DataLoader implements ApplicationRunner {
         userService.save(user);
 
         final User admin = User.builder()
-                .firstName("Admin")
-                .lastName("User")
+                .firstName("Administrator")
+                .lastName("SOKN")
                 .email("admin@email.com")
                 .enabled(true)
                 .password(PASSWORD)
@@ -101,8 +102,8 @@ public class DataLoader implements ApplicationRunner {
         userService.save(admin);
 
         final User reviewer = User.builder()
-                .firstName("Reviewer")
-                .lastName("User")
+                .firstName("Recenzent")
+                .lastName("Nazwisko")
                 .email("recenzent@email.com")
                 .enabled(true)
                 .password(PASSWORD)
@@ -120,12 +121,30 @@ public class DataLoader implements ApplicationRunner {
 
         final Article article = Article.builder()
                 .gradeStatus(0)
-                .pathFile("uploadFiles" + SEPARATOR + user.getId() + "_LPSUM.txt")
+                .pathFile(UPLOADED_FOLDER + user.getId() + "_LPSUM.txt")
                 .subject("LPSUM")
                 .fieldOfArticle(fieldTwo)
                 .user(user)
                 .build();
 
+        final Article graphene = Article.builder()
+                .gradeStatus(0)
+                .pathFile(UPLOADED_FOLDER + user.getId() + "_GrafenMaterial.pdf")
+                .subject("Grafen")
+                .fieldOfArticle(fieldOne)
+                .user(user)
+                .build();
+
+        final Article srs = Article.builder()
+                .gradeStatus(0)
+                .pathFile(UPLOADED_FOLDER + user.getId() + "_DokumentSRS.docx")
+                .subject("Dokument SRS")
+                .fieldOfArticle(fieldOne)
+                .user(user)
+                .build();
+
         articleService.save(article);
+        articleService.save(graphene);
+        articleService.save(srs);
     }
 }
