@@ -16,8 +16,6 @@ import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
 import pl.sokn.service.UserService;
 
-import java.util.Collection;
-
 @Api(tags = "User")
 @RestController
 @RequestMapping(path = SoknDefinitions.Api.USERS_PATH)
@@ -41,9 +39,8 @@ public class UserController extends AbstractGenericController<UserDTO, User, Lon
     }
 
     @ApiOperation(value = "Check if person is registered")
-    @PostMapping(path="/checkIfRegistered",consumes= MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path="/checkIfRegistered",consumes= MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity checkIfRegistered(@RequestBody String email, final HttpServletRequest request) throws OperationException {
-
         return ResponseEntity.ok(userService.isUserInDB(email,request));
     }
 

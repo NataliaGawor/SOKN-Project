@@ -5,16 +5,10 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import pl.sokn.definitions.SoknDefinitions.Roles;
-import pl.sokn.entity.Article;
-import pl.sokn.entity.Authority;
-import pl.sokn.entity.FieldOfArticle;
-import pl.sokn.entity.User;
+import pl.sokn.entity.*;
 import pl.sokn.enums.Gender;
 import pl.sokn.exception.OperationException;
-import pl.sokn.service.ArticleService;
-import pl.sokn.service.AuthorityService;
-import pl.sokn.service.FieldOfArticleService;
-import pl.sokn.service.UserService;
+import pl.sokn.service.*;
 
 import javax.transaction.Transactional;
 import java.io.File;
@@ -36,15 +30,20 @@ public class DataLoader implements ApplicationRunner {
     private final UserService userService;
     private final FieldOfArticleService fieldOfArticleService;
     private final ArticleService articleService;
+    private final ArticleGradeService articleGradeService;
+
 
     @Autowired
     public DataLoader(AuthorityService authorityService,
                       @pl.sokn.annotation.qualifier.UserService UserService userService,
-                      FieldOfArticleService fieldOfArticleService, ArticleService articleService) {
+
+                     FieldOfArticleService fieldOfArticleService,ArticleService articleService,
+                        ArticleGradeService articleGradeService){
         this.authorityService = authorityService;
         this.userService = userService;
         this.fieldOfArticleService=fieldOfArticleService;
-        this.articleService = articleService;
+        this.articleService=articleService;
+        this.articleGradeService=articleGradeService;
     }
 
     @Override
@@ -119,32 +118,83 @@ public class DataLoader implements ApplicationRunner {
         userService.save(reviewer);
 
 
-        final Article article = Article.builder()
-                .gradeStatus(0)
-                .pathFile(UPLOADED_FOLDER + user.getId() + "_LPSUM.txt")
-                .subject("LPSUM")
-                .fieldOfArticle(fieldTwo)
-                .user(user)
+
+        fieldOfArticleService.save(fieldOne);
+        fieldOfArticleService.save(fieldTwo);
+
+        final ArticleGrade grade=ArticleGrade.builder()
+                .negative(0)
+                .neutral(0)
+                .positive(0)
+                .comment("nieźle")
                 .build();
 
-        final Article graphene = Article.builder()
-                .gradeStatus(0)
-                .pathFile(UPLOADED_FOLDER + user.getId() + "_GrafenMaterial.pdf")
-                .subject("Grafen")
+        final ArticleGrade grade1=ArticleGrade.builder()
+                .negative(1)
+                .neutral(1)
+                .positive(1)
+                .comment("super")
+                .build();
+
+        final ArticleGrade grade2=ArticleGrade.builder()
+                .negative(1)
+                .neutral(1)
+                .positive(1)
+                .comment("słaby")
+                .build();
+
+        final ArticleGrade grade3=ArticleGrade.builder()
+                .negative(0)
+                .neutral(1)
+                .positive(2)
+                .comment("lepiej")
+                .build();
+
+        articleGradeService.save(grade);
+        articleGradeService.save(grade1);
+        articleGradeService.save(grade2);
+        articleGradeService.save(grade3);
+
+        final Article articleOne=Article.builder()
+                .subject("Dynamika")
+                .pathFile("uploadFiles\\1_dyn.txt")
+                .user(user)
                 .fieldOfArticle(fieldOne)
-                .user(user)
+                .articleGrade(grade)
                 .build();
 
-        final Article srs = Article.builder()
-                .gradeStatus(0)
-                .pathFile(UPLOADED_FOLDER + user.getId() + "_DokumentSRS.docx")
-                .subject("Dokument SRS")
+         articleService.save(articleOne);
+
+        final Article articleTwo=Article.builder()
+                .subject("Fizyka")
+                .pathFile("uploadFiles\\2_fiz.txt")
+                .user(admin)
                 .fieldOfArticle(fieldOne)
-                .user(user)
+                .articleGrade(grade1)
                 .build();
 
-        articleService.save(article);
-        articleService.save(graphene);
-        articleService.save(srs);
+        articleService.save(articleTwo);
+
+        final Article articleThree=Article.builder()
+                .subject("Matematyka")
+                .pathFile("uploadFiles\\1_mat.txt")
+                .user(user)
+                .fieldOfArticle(fieldOne)
+                .articleGrade(grade2)
+                .build();
+
+        articleService.save(articleThree);
+
+        final Article articleFour=Article.builder()
+                .subject("Biologia")
+                .pathFile("uploadFiles\\1_biol.txt")
+                .user(user)
+                .fieldOfArticle(fieldOne)
+                .articleGrade(grade3)
+                .build();
+
+        articleService.save(articleFour);
+
+
     }
 }

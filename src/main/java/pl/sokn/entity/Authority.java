@@ -25,6 +25,10 @@ public class Authority {
 
     private String role;
 
+    public Authority(String role) {
+        this.role = role;
+    }
+
     public static Authority convertFrom(final AuthorityDTO dto) {
         if (dto == null)
             return null;

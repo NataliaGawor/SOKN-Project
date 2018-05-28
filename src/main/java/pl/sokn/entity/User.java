@@ -47,6 +47,24 @@ public class User {
     private String country;
     private Boolean enabled;
 
+    public User(String firstName, String lastName, Gender gender, String degree,
+                String email, String password, String affiliation, String city, String zipCode,
+                String country, Boolean enabled, Set<Authority> authorities, Set<FieldOfArticle> fieldOfArticles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.degree = degree;
+        this.email = email;
+        this.password = password;
+        this.affiliation = affiliation;
+        this.city = city;
+        this.zipCode = zipCode;
+        this.country = country;
+        this.enabled = enabled;
+        this.authorities = authorities;
+        this.fieldOfArticles = fieldOfArticles;
+    }
+
     // settings for many-to-many relationship between user and authorities
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     // we set custom names for table and columns between user and authorities

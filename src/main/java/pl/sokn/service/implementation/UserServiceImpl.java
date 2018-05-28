@@ -61,15 +61,17 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
     }
 
     @Override
-    public User isUserInDB(final String email, final HttpServletRequest request) throws OperationException {
-        User user = retrieveByEmail(email);
-        String url = getAppUrl(request);
-        if (user != null) {
-            sendEmailService.sendSimpleMessage(email, "Informacja o posiadaniu konta", "Posiadasz konto w naszym serwisie. " +
-                    "Aby sie zalogowac kliknij-->" + "<a href=" + url + "/CustomUser/logIn/logIn.html" + ">Zaloguj se</a>");
-        } else {
-            sendEmailService.sendSimpleMessage(email, "Informacja o posiadaniu konta", "Nie posiadasz konta w naszym serwisie. " +
-                    "Aby sie zarejestrowac kliknij--><a href=" + url + "/CustomUser/registration/registration.html" + ">Rejestracja</a>");
+
+    public User isUserInDB(final String email, final HttpServletRequest request)throws OperationException{
+        User user=retrieveByEmail(email);
+        String url=getAppUrl(request);
+        if(user!=null){
+            sendEmailService.sendSimpleMessage(email,"Informacja o posiadaniu konta","Posiadasz konto w naszym serwisie. "+
+                    "Aby sie zalogowac kliknij-->" +"<a href="+url+"/user/login/login.html"+">Zaloguj se</a>");
+        }
+        else{
+            sendEmailService.sendSimpleMessage(email,"Informacja o posiadaniu konta","Nie posiadasz konta w naszym serwisie. " +
+                    "Aby sie zarejestrowac kliknij--><a href="+url+"/user/registration/registration.html"+">Rejestracja</a>");
         }
         return user;
     }

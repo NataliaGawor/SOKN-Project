@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import pl.sokn.entity.FieldOfArticle;
 import pl.sokn.repository.ArticleRepository;
 import pl.sokn.repository.FieldOfArticleRepository;
-import pl.sokn.repository.GenericRepository;
 import pl.sokn.service.FieldOfArticleService;
 
 @Service
@@ -19,7 +18,6 @@ public class FieldOfArticleServiceImpl extends AbstractGenericService<FieldOfArt
         this.fieldOfArticleRepository = fieldOfArticleRepository;
         this.articleRepository = articleRepository;
     }
-
 
     @Override
     public FieldOfArticle retrieveByField(String field) {

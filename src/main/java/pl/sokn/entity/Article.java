@@ -27,7 +27,6 @@ public class Article {
 
     private String subject;
     private String pathFile;
-    private int gradeStatus;
 
 
     @ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
@@ -38,12 +37,16 @@ public class Article {
     @JoinColumn(nullable = false, name = "field_id")
     private FieldOfArticle fieldOfArticle;
 
-    public Article(String subject, String pathFile, int gradeStatus, User user, FieldOfArticle fieldOfArticle) {
+    @OneToOne(targetEntity = ArticleGrade.class, fetch = FetchType.EAGER)
+    @JoinColumn(nullable = false, name = "article_grade")
+    private ArticleGrade articleGrade;
+
+    public Article(String subject, String pathFile, User user, FieldOfArticle fieldOfArticle, ArticleGrade articleGrade) {
         this.subject = subject;
         this.pathFile = pathFile;
-        this.gradeStatus = gradeStatus;
         this.user = user;
         this.fieldOfArticle = fieldOfArticle;
+        this.articleGrade = articleGrade;
     }
 
     public static ArticleDTO convertTo(final Article article) {
@@ -54,15 +57,15 @@ public class Article {
                 .id(article.getId())
                 .subject(article.getSubject())
                 .pathFile(article.getPathFile())
-                .gradeStatus(article.getGradeStatus())
-                .user(UserDTO.builder()
-                        .id(article.getUser().getId())
-                        .firstName(article.getUser().getFirstName())
-                        .build())
                 .fieldOfArticle(FieldOfArticleDTO.builder()
                         .id(article.getFieldOfArticle().getId())
                         .field(article.getFieldOfArticle().getField())
                         .build())
+                .user(UserDTO.builder()
+                        .id(article.getUser().getId())
+                        .firstName(article.getUser().getFirstName())
+                        .build())
+                .articleGrade(article.getArticleGrade())
                 .build();
     }
 }
