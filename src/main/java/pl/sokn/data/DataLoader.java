@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
+import pl.sokn.definitions.SoknDefinitions.Roles;
 import pl.sokn.entity.*;
 import pl.sokn.enums.Gender;
 import pl.sokn.exception.OperationException;
 import pl.sokn.service.*;
 
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.Set;
 
 /**
@@ -18,6 +20,8 @@ import java.util.Set;
 @Component
 public class DataLoader implements ApplicationRunner {
 
+    private static final String SEPARATOR = File.separator;
+    private static final String UPLOADED_FOLDER = "uploadFiles" + SEPARATOR;
     private static final String PASSWORD = "{bcrypt}$2a$10$usFd.2lfQzOVG/N45uDr7emsFOenWpAtwjqmROMqevyqou/eG26rS";
     private static final String KRAKOW = "Kraków";
     private static final String POLAND = "Poland";
@@ -28,9 +32,11 @@ public class DataLoader implements ApplicationRunner {
     private final ArticleService articleService;
     private final ArticleGradeService articleGradeService;
 
+
     @Autowired
     public DataLoader(AuthorityService authorityService,
                       @pl.sokn.annotation.qualifier.UserService UserService userService,
+
                      FieldOfArticleService fieldOfArticleService,ArticleService articleService,
                         ArticleGradeService articleGradeService){
         this.authorityService = authorityService;
@@ -48,13 +54,13 @@ public class DataLoader implements ApplicationRunner {
 
     private void createUsers() throws OperationException {
 
-        final Authority authorRole = Authority.builder().role("AUTHOR").build();
+        final Authority authorRole = Authority.builder().role(Roles.DEFAULT_ROLE).build();
         authorityService.save(authorRole);
-        final Authority reviewerRole = Authority.builder().role("REVIEWER").build();
+        final Authority reviewerRole = Authority.builder().role(Roles.REVIEWER_ROLE).build();
         authorityService.save(reviewerRole);
-        final Authority adminRole = Authority.builder().role("ADMIN").build();
+        final Authority adminRole = Authority.builder().role(Roles.ADMIN_ROLE).build();
         authorityService.save(adminRole);
-        final Authority passChangeRole = Authority.builder().role("PASS_CHANGE").build();
+        final Authority passChangeRole = Authority.builder().role(Roles.PASS_CHANGE_ROLE).build();
         authorityService.save(passChangeRole);
 
         final FieldOfArticle fieldOne=FieldOfArticle.builder().field("Systemy Wbudowane").build();
@@ -63,9 +69,9 @@ public class DataLoader implements ApplicationRunner {
         fieldOfArticleService.save(fieldTwo);
 
         final User user = User.builder()
-                .firstName("First")
-                .lastName("User")
-                .email("author@email.com")
+                .firstName("Prelegent")
+                .lastName("Naziwsko")
+                .email("prelegent@email.com")
                 .enabled(true)
                 .password(PASSWORD)
                 .degree("Mgr")
@@ -79,8 +85,8 @@ public class DataLoader implements ApplicationRunner {
         userService.save(user);
 
         final User admin = User.builder()
-                .firstName("Admin")
-                .lastName("User")
+                .firstName("Administrator")
+                .lastName("SOKN")
                 .email("admin@email.com")
                 .enabled(true)
                 .password(PASSWORD)
@@ -95,9 +101,9 @@ public class DataLoader implements ApplicationRunner {
         userService.save(admin);
 
         final User reviewer = User.builder()
-                .firstName("Reviewer")
-                .lastName("User")
-                .email("reviewer@email.com")
+                .firstName("Recenzent")
+                .lastName("Nazwisko")
+                .email("recenzent@email.com")
                 .enabled(true)
                 .password(PASSWORD)
                 .degree("Doctor")
@@ -189,5 +195,33 @@ public class DataLoader implements ApplicationRunner {
 
         articleService.save(articleFour);
 
+
+//        final Article article = Article.builder()
+//                .gradeStatus(0)
+//                .pathFile(UPLOADED_FOLDER + user.getId() + "_LPSUM.txt")
+//                .subject("LPSUM")
+//                .fieldOfArticle(fieldTwo)
+//                .user(user)
+//                .build();
+//
+//        final Article graphene = Article.builder()
+//                .gradeStatus(0)
+//                .pathFile(UPLOADED_FOLDER + user.getId() + "_GrafenMaterial.pdf")
+//                .subject("Grafen")
+//                .fieldOfArticle(fieldOne)
+//                .user(user)
+//                .build();
+//
+//        final Article srs = Article.builder()
+//                .gradeStatus(0)
+//                .pathFile(UPLOADED_FOLDER + user.getId() + "_DokumentSRS.docx")
+//                .subject("Dokument SRS")
+//                .fieldOfArticle(fieldOne)
+//                .user(user)
+//                .build();
+//
+//        articleService.save(article);
+//        articleService.save(graphene);
+//        articleService.save(srs);
     }
 }

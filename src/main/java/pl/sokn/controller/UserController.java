@@ -50,4 +50,13 @@ public class UserController extends AbstractGenericController<UserDTO, User, Lon
         userService.sendEmail(emailDTO,request);
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK,""));
     }
+
+    @ApiOperation(value = "Add reviewer authority to existing account")
+    @PostMapping(path = "/addReviewerAuthority")
+    public ResponseEntity addReviewerAuthority(@RequestParam("email") String email,
+                                               @RequestParam("fieldObligatory") String fieldObligatory,
+                                               @RequestParam(value = "fieldAdditional", required = false) String fieldAdditional, final HttpServletRequest request) throws OperationException{
+        userService.addReviewerAuthority(email, fieldObligatory, fieldAdditional);
+        return ResponseEntity.status(HttpStatus.OK).body(new CustomResponseMessage<>(HttpStatus.OK, ""));
+    }
 }

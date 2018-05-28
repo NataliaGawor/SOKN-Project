@@ -2,9 +2,13 @@ package pl.sokn.service.implementation;
 
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import pl.sokn.definitions.SoknDefinitions.Roles;
+import pl.sokn.definitions.SoknDefinitions.ErrorMessages;
 import pl.sokn.dto.EmailMessage;
+import pl.sokn.entity.Authority;
 import pl.sokn.entity.FieldOfArticle;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
@@ -44,7 +48,7 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
         this.passwordEncoder = passwordEncoder;
         this.tokenRepository = tokenRepository;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
-        this.sendEmailService=sendEmailService;
+        this.sendEmailService = sendEmailService;
     }
 
     @Override
@@ -57,6 +61,7 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
     }
 
     @Override
+
     public User isUserInDB(final String email, final HttpServletRequest request)throws OperationException{
         User user=retrieveByEmail(email);
         String url=getAppUrl(request);
@@ -73,11 +78,37 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
 
     //Send Email to sokn.noreply
     @Override
-    public void sendEmail(final EmailMessage emailDTO, final HttpServletRequest request)throws OperationException{
-        String email=emailDTO.getEmail();
+    public void sendEmail(final EmailMessage emailDTO, final HttpServletRequest request) throws OperationException {
+        String email = emailDTO.getEmail();
         String subject = emailDTO.getName();
         String message = emailDTO.getText();
 
-        sendEmailService.sendSimpleMessage("sokn.noreply@gmail.com",subject,"E-mail from: "+ email+"<br/>"+message);
+        sendEmailService.sendSimpleMessage("sokn.noreply@gmail.com", subject, "E-mail from: " + email + "<br/>" + message);
+    }
+
+    @Override
+    public void addReviewerAuthority(String email, String fieldObligatory, String fieldAdditional) throws OperationException {
+        User user = retrieveByEmail(email);
+        //check if user exist
+        if (user != null) {
+            Authority role = authorityService.retrieve(Roles.REVIEWER_ROLE);
+            // check if user have reviewer role
+            if (!user.getAuthorities().contains(role)) {
+                FieldOfArticle field = fieldOfArticleService.retrieveByField(fieldObligatory);
+
+                user.getAuthorities().add(role);
+                user.getFieldOfArticles().add(field);
+
+                if (fieldAdditional != null) {
+                    field = fieldOfArticleService.retrieveByField(fieldAdditional);
+                    user.getFieldOfArticles().add(field);
+                }
+                update(user);
+            } else
+                throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.USER_ALREADY_HAS_AUTHORITY);
+        } else
+            throw new OperationException(HttpStatus.BAD_REQUEST, ErrorMessages.USER_DOES_NOT_EXISTS);
+
+        sendEmailService.constructAddReviewerAuthority(email);
     }
 }

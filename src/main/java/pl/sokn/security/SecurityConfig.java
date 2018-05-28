@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers(HttpMethod.DELETE).hasAuthority(Roles.ADMIN_ROLE) // only admins can use DELETE methods in REST controllers
+                .antMatchers(Api.REVIEWER_PATH + "/**").hasAnyAuthority(Roles.REVIEWER_ROLE, Roles.ADMIN_ROLE)
                 .antMatchers(HttpMethod.GET).permitAll()
                 // when you create new end point which should be accessible for unauthenticated user only
                 // please add the path here

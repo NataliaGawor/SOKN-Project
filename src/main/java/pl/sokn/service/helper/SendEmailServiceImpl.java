@@ -98,11 +98,18 @@ public class SendEmailServiceImpl implements SendEmailService {
     }
 
     public void constructReviewerRegistrationEmail(final String to, String password) throws OperationException {
-        final String recipientAddress = to;
         final String subject = "Utworzono konto recenzenta";
         final String message = "<p>W systemmie SOKN utworzono dla Ciebie konto recenzenta.</p><p>Twoje dane do logowania: </p>" +
                                 "<p>login: " + to + "</p>" + "<p>haslo: " + password + "</p><p>Pamietaj aby zmienic haslo zaraz po zalogowaniu</p>";
 
-        sendSimpleMessage(recipientAddress, subject, message);
+        sendSimpleMessage(to, subject, message);
+    }
+
+    @Override
+    public void constructAddReviewerAuthority(final String to) throws OperationException {
+        final String subject = "Uprawnienia recenzenta";
+        final String message = "<p>Dziekujemy za chec wspolpracy jako nasz recenzent.</p> <p>Juz teraz mozesz sprawdzic czy pojawily sie nowe prace do oceny</p>";
+
+        sendSimpleMessage(to, subject, message);
     }
 }

@@ -31,7 +31,7 @@ public class Article {
     private User user;
 
     @ManyToOne(targetEntity = FieldOfArticle.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false,name="field_id")
+    @JoinColumn(nullable = false, name = "field_id")
     private FieldOfArticle fieldOfArticle;
 
     @OneToOne(targetEntity = ArticleGrade.class, fetch = FetchType.EAGER)
@@ -45,4 +45,24 @@ public class Article {
         this.fieldOfArticle = fieldOfArticle;
         this.articleGrade = articleGrade;
     }
+
+//    public static ArticleDTO convertTo(final Article article) {
+//        if (article == null)
+//            return null;
+//
+//        return ArticleDTO.builder()
+//                .id(article.getId())
+//                .subject(article.getSubject())
+//                .pathFile(article.getPathFile())
+//                .gradeStatus(article.getArticleGrade()
+//                .user(UserDTO.builder()
+//                        .id(article.getUser().getId())
+//                        .firstName(article.getUser().getFirstName())
+//                        .build())
+//                .fieldOfArticle(FieldOfArticleDTO.builder()
+//                        .id(article.getFieldOfArticle().getId())
+//                        .field(article.getFieldOfArticle().getField())
+//                        .build())
+//                .build();
+//    }
 }
