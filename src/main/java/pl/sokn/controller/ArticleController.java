@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.sokn.definitions.SoknDefinitions;
 import pl.sokn.dto.ArticleDTO;
-import pl.sokn.entity.Article;
 import pl.sokn.exception.OperationException;
 import pl.sokn.security.information.AuthenticationFacade;
 import pl.sokn.service.ArticleService;
@@ -20,7 +19,7 @@ import java.util.List;
 
 @io.swagger.annotations.Api(tags = "Article")
 @RestController
-@RequestMapping(path = "/article")
+@RequestMapping(path = "")
 public class ArticleController {
     private final ArticleService articleService;
     private final AuthenticationFacade authenticationFacade;
@@ -37,7 +36,7 @@ public class ArticleController {
                                         @RequestParam("subject") String subjectId,
                                         @RequestParam("fieldOfArticle") String fieldOfArticle) throws OperationException, IOException {
 
-        System.out.println("JEST");
+
         final String email = authenticationFacade.getAuthentication().getName();
         articleService.uploadArticle(email, file, subjectId, fieldOfArticle);
 

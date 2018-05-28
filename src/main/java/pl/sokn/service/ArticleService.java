@@ -8,8 +8,7 @@ import java.io.IOException;
 import java.util.List;
 
 public interface ArticleService extends GenericService<Article,Long>{
-    void uploadArticle(String email,MultipartFile file,String subject,String fieldOfArticle) throws OperationException;
-    void saveArticle(MultipartFile file,Long id) throws OperationException;
+    void uploadArticle(String email,MultipartFile file,String subject,String fieldOfArticle) throws OperationException, IOException;
     void deleteArticle(Long articleId) throws OperationException;
     byte[] retrieve(final String path) throws IOException;
     List<Article> getAllAuthorArticle(String email);

@@ -12,9 +12,7 @@ import pl.sokn.exception.OperationException;
 import pl.sokn.repository.*;
 import pl.sokn.service.ArticleService;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -66,33 +64,15 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
 
         @Override
         public void uploadArticle (String email, MultipartFile file, String subject, String fieldOfArticle) throws
-        OperationException {
-            System.out.println("JESTEM");
+                OperationException, IOException {
             checkArticle(subject);
             checkFile(file); //check if file is empty
-            User user = userRepository.findByEmail(email);
-            saveArticle(file, user.getId()); //save file
+            final User user = userRepository.findByEmail(email);
+            saveFile(file, user.getId()); //save file
             FieldOfArticle field = fieldOfArticleRepository.getOne(Long.valueOf(fieldOfArticle));
-            ArticleGrade articleGrade = new ArticleGrade(0, 0, 0, "");
+            final ArticleGrade articleGrade = new ArticleGrade(0, 0, 0, "");
             articleGradeRepository.save(articleGrade);
             save(new Article(subject, UPLOADED_FOLDER + user.getId() + "_" + file.getOriginalFilename(), user, field, articleGrade));
-        }
-
-        @Override
-        public void saveArticle (MultipartFile file, Long id) throws OperationException {
-            String fileName = file.getOriginalFilename();
-
-            byte[] bytes;
-            try {
-                bytes = file.getBytes();
-                BufferedOutputStream buffStream =
-                        new BufferedOutputStream(new FileOutputStream(new File(getPathTofile() + "\\uploadFiles\\" + id + "_" + fileName)));
-                buffStream.write(bytes);
-                buffStream.close();
-            } catch (IOException e) {
-                throw new OperationException(HttpStatus.NOT_ACCEPTABLE, "Nie udało się dodać artykułu");
-            }
-
         }
 
 

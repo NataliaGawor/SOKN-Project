@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import pl.sokn.dto.FieldOfArticleDTO;
 
 import javax.persistence.*;
-import java.util.Set;
 
 /**
  * Class with @Entity annotation will be generated in the database as a table
@@ -25,6 +24,10 @@ public class FieldOfArticle {
     private Long id;
 
     private String field;
+
+    public FieldOfArticle(String field) {
+        this.field = field;
+    }
 
     public static FieldOfArticle convertFrom(final FieldOfArticleDTO dto) {
         if (dto == null)
