@@ -157,7 +157,7 @@ public class DataLoader implements ApplicationRunner {
 
         final Article articleOne=Article.builder()
                 .subject("Dynamika")
-                .pathFile("\\uploadFiles\\1_dyn.txt")
+                .pathFile("uploadFiles\\1_dyn.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade)
@@ -167,7 +167,7 @@ public class DataLoader implements ApplicationRunner {
 
         final Article articleTwo=Article.builder()
                 .subject("Fizyka")
-                .pathFile("\\uploadFiles\\2_fiz.txt")
+                .pathFile("uploadFiles\\2_fiz.txt")
                 .user(admin)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade1)
@@ -177,7 +177,7 @@ public class DataLoader implements ApplicationRunner {
 
         final Article articleThree=Article.builder()
                 .subject("Matematyka")
-                .pathFile("\\uploadFiles\\1_mat.txt")
+                .pathFile("uploadFiles\\1_mat.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade2)
@@ -187,7 +187,7 @@ public class DataLoader implements ApplicationRunner {
 
         final Article articleFour=Article.builder()
                 .subject("Biologia")
-                .pathFile("\\uploadFiles\\1_biol.txt")
+                .pathFile("uploadFiles\\1_biol.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade3)
@@ -196,32 +196,5 @@ public class DataLoader implements ApplicationRunner {
         articleService.save(articleFour);
 
 
-//        final Article article = Article.builder()
-//                .gradeStatus(0)
-//                .pathFile(UPLOADED_FOLDER + user.getId() + "_LPSUM.txt")
-//                .subject("LPSUM")
-//                .fieldOfArticle(fieldTwo)
-//                .user(user)
-//                .build();
-//
-//        final Article graphene = Article.builder()
-//                .gradeStatus(0)
-//                .pathFile(UPLOADED_FOLDER + user.getId() + "_GrafenMaterial.pdf")
-//                .subject("Grafen")
-//                .fieldOfArticle(fieldOne)
-//                .user(user)
-//                .build();
-//
-//        final Article srs = Article.builder()
-//                .gradeStatus(0)
-//                .pathFile(UPLOADED_FOLDER + user.getId() + "_DokumentSRS.docx")
-//                .subject("Dokument SRS")
-//                .fieldOfArticle(fieldOne)
-//                .user(user)
-//                .build();
-//
-//        articleService.save(article);
-//        articleService.save(graphene);
-//        articleService.save(srs);
     }
 }

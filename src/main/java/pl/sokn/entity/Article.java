@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pl.sokn.dto.ArticleDTO;
+import pl.sokn.dto.FieldOfArticleDTO;
+import pl.sokn.dto.UserDTO;
 
 import javax.persistence.*;
 
@@ -46,23 +49,23 @@ public class Article {
         this.articleGrade = articleGrade;
     }
 
-//    public static ArticleDTO convertTo(final Article article) {
-//        if (article == null)
-//            return null;
-//
-//        return ArticleDTO.builder()
-//                .id(article.getId())
-//                .subject(article.getSubject())
-//                .pathFile(article.getPathFile())
-//                .gradeStatus(article.getArticleGrade()
-//                .user(UserDTO.builder()
-//                        .id(article.getUser().getId())
-//                        .firstName(article.getUser().getFirstName())
-//                        .build())
-//                .fieldOfArticle(FieldOfArticleDTO.builder()
-//                        .id(article.getFieldOfArticle().getId())
-//                        .field(article.getFieldOfArticle().getField())
-//                        .build())
-//                .build();
-//    }
+    public static ArticleDTO convertTo(final Article article) {
+        if (article == null)
+            return null;
+
+        return ArticleDTO.builder()
+                .id(article.getId())
+                .subject(article.getSubject())
+                .pathFile(article.getPathFile())
+                .fieldOfArticle(FieldOfArticleDTO.builder()
+                        .id(article.getFieldOfArticle().getId())
+                        .field(article.getFieldOfArticle().getField())
+                        .build())
+                .user(UserDTO.builder()
+                        .id(article.getUser().getId())
+                        .firstName(article.getUser().getFirstName())
+                        .build())
+                .articleGrade(article.getArticleGrade())
+                .build();
+    }
 }

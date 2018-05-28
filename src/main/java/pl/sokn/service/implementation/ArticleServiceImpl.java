@@ -30,7 +30,7 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
     private UserRepository userRepository;
     private FieldOfArticleRepository fieldOfArticleRepository;
     private ArticleGradeRepository articleGradeRepository;
-    private static String UPLOADED_FOLDER = "\\uploadFiles\\";
+    private static String UPLOADED_FOLDER = "uploadFiles"+SEPARATOR;
 
     @Autowired
     public ArticleServiceImpl(GenericRepository<Article, Long> repository, ArticleRepository articleRepository,
@@ -79,7 +79,7 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
         @Override
         public void deleteArticle (Long articleId) throws OperationException {
             Article article = articleRepository.getOne(articleId);
-            String url = getPathTofile() + article.getPathFile();
+            String url = getPathTofile() + SEPARATOR +article.getPathFile();
 
             try {
                 Files.delete(Paths.get(url));

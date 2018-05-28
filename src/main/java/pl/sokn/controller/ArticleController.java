@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.sokn.definitions.SoknDefinitions;
 import pl.sokn.dto.ArticleDTO;
+import pl.sokn.entity.Article;
 import pl.sokn.exception.OperationException;
 import pl.sokn.security.information.AuthenticationFacade;
 import pl.sokn.service.ArticleService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @io.swagger.annotations.Api(tags = "Article")
 @RestController
@@ -46,14 +48,13 @@ public class ArticleController {
     @GetMapping(path = SoknDefinitions.Api.REVIEWER_PATH + "/article", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ArticleDTO>> getArticles() {
 
-//        final String email = authenticationFacade.getAuthentication().getName();
-//
-//        final List<Article> articles = articleService.getAll(email);
-//
-//        return ResponseEntity.ok(articles.stream()
-//                .map(Article::convertTo)
-//                .collect(Collectors.toList()));
-        return null;
+        final String email = authenticationFacade.getAuthentication().getName();
+
+        final List<Article> articles = articleService.getAll(email);
+
+        return ResponseEntity.ok(articles.stream()
+                .map(Article::convertTo)
+                .collect(Collectors.toList()));
     }
 
     @GetMapping(path = SoknDefinitions.Api.REVIEWER_PATH + "/article/{path}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
