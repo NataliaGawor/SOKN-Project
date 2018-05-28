@@ -71,7 +71,7 @@ public class RegistrationControllerTest extends BaseTest {
 
     @Test
     public void shouldResetPassword() throws Exception {
-        final String token = obtainToken("author@email.com", "pass");
+        final String token = obtainToken("prelegent@email.com", "pass");
         final PasswordUpdate password = new PasswordUpdate();
         password.setOldPassword("pass");
         password.setPassword("new");

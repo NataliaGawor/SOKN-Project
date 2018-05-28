@@ -27,23 +27,23 @@ public class FieldOfArticleServiceTest {
     private FieldOfArticleRepository fieldOfArticleRepository;
 
     @InjectMocks
-    FieldOfArticleServiceImpl fieldOfArticleServiceImpl;
+    private FieldOfArticleServiceImpl fieldOfArticleServiceImpl;
 
     @Test
-    public void checkAutowired(){
+    public void checkAutowired() {
         assertNotNull(fieldOfArticleRepository);
         assertNotNull(articleRepository);
     }
 
     @Test
-    public void getByField(){
-        FieldOfArticle fieldOfArticle=new FieldOfArticle();
+    public void getByField() {
+        FieldOfArticle fieldOfArticle = new FieldOfArticle();
         fieldOfArticle.setField("Sztuczna Inteligencja");
 
         when(fieldOfArticleRepository.findByField("Sztuczna Inteligencja")).thenReturn(fieldOfArticle);
 
-        FieldOfArticle realFieldOfArticle=fieldOfArticleServiceImpl.retrieveByField("Sztuczna Inteligencja");
-        assertEquals(realFieldOfArticle.getField(),fieldOfArticle.getField());
+        FieldOfArticle realFieldOfArticle = fieldOfArticleServiceImpl.retrieveByField("Sztuczna Inteligencja");
+        assertEquals(realFieldOfArticle.getField(), fieldOfArticle.getField());
 
         verify(fieldOfArticleRepository).findByField("Sztuczna Inteligencja");
     }

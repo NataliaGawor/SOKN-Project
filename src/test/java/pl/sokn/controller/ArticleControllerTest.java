@@ -19,35 +19,36 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class ArticleControllerTest extends BaseTest {
 
+    private static final String AUTHOR_EMAIL = "prelegent@email.com";
+
     @Test
     public void addArticle() throws Exception {
-       String token=obtainToken("author@email.com","pass");
+        String token = obtainToken(AUTHOR_EMAIL, "pass");
 
-        MockMultipartFile file=
-                new MockMultipartFile("file","test.txt", MediaType.TEXT_PLAIN_VALUE,"test".getBytes());
+        MockMultipartFile file =
+                new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test".getBytes());
 
-
-                mvc.perform(fileUpload("/article/uploadArticle")
-                        .file(file)
-                        .param("subject","Test")
-                        .param("fieldOfArticle","2")
-                        .header(SoknDefinitions.AuthorizationHelper.AUTHORIZATION, SoknDefinitions.AuthorizationHelper.BEARER + token))
-                        .andDo(print())
-                        .andExpect(status().isOk());
+        mvc.perform(fileUpload("/uploadArticle")
+                .file(file)
+                .param("subject", "Test")
+                .param("fieldOfArticle", "2")
+                .header(SoknDefinitions.AuthorizationHelper.AUTHORIZATION, SoknDefinitions.AuthorizationHelper.BEARER + token))
+                .andDo(print())
+                .andExpect(status().isOk());
     }
 
     @Test
     public void addArticleWithBadSubject() throws Exception {
-        String token=obtainToken("author@email.com","pass");
+        String token = obtainToken(AUTHOR_EMAIL, "pass");
 
-        MockMultipartFile file=
-                new MockMultipartFile("file","test.txt", MediaType.TEXT_PLAIN_VALUE,"test".getBytes());
+        MockMultipartFile file =
+                new MockMultipartFile("file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "test".getBytes());
 
 
-        mvc.perform(fileUpload("/article/uploadArticle")
+        mvc.perform(fileUpload("/uploadArticle")
                 .file(file)
-                .param("subject","Test_2")
-                .param("fieldOfArticle","2")
+                .param("subject", "Test_2")
+                .param("fieldOfArticle", "2")
                 .header(SoknDefinitions.AuthorizationHelper.AUTHORIZATION, SoknDefinitions.AuthorizationHelper.BEARER + token))
                 .andDo(print())
                 .andExpect(status().isNotAcceptable());

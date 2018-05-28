@@ -12,6 +12,6 @@ public interface ArticleService extends GenericService<Article,Long>{
     void deleteArticle(Long articleId) throws OperationException;
     byte[] retrieve(final String path) throws IOException;
     List<Article> getAllAuthorArticle(String email);
-    List<Article> getAll(final String email);
+    List<Article> getArticlesToReview(final String email);
 
 }

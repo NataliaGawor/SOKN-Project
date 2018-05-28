@@ -11,6 +11,7 @@ import pl.sokn.entity.FieldOfArticle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -24,20 +25,20 @@ public class FieldOfArticleRepositoryTest {
     private FieldOfArticle fieldOfArticle;
 
     @Before
-    public void createFieldOfArticle(){
+    public void createFieldOfArticle() {
         entityManager.persist(new FieldOfArticle("Sztuczna Inteligencja"));
         entityManager.persist(new FieldOfArticle("Systemy Wbudowane"));
     }
 
     @Test
-    public void findByFieldOK(){
-        fieldOfArticle=fieldOfArticleRepository.findByField("Sztuczna Inteligencja");
-        assertEquals("Sztuczna Inteligencja",fieldOfArticle.getField());
+    public void findByFieldOK() {
+        fieldOfArticle = fieldOfArticleRepository.findByField("Sztuczna Inteligencja");
+        assertEquals("Sztuczna Inteligencja", fieldOfArticle.getField());
     }
 
     @Test
-    public void findByFieldFalse(){
-        fieldOfArticle=fieldOfArticleRepository.findByField("SW");
-        assertFalse("SW".equals(fieldOfArticle.getField()));
+    public void findByFieldFalse() {
+        fieldOfArticle = fieldOfArticleRepository.findByField("SW");
+        assertNull(fieldOfArticle);
     }
 }
