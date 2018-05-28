@@ -1,5 +1,7 @@
 package pl.sokn.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -7,6 +9,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class ArticleGrade {
 
@@ -18,14 +22,12 @@ public class ArticleGrade {
     private int positive;
     private int negative;
     private int neutral;
+    private String comment;
 
-    @OneToOne(targetEntity = Article.class, fetch = FetchType.EAGER)
-    @JoinColumn(nullable = false, name = "article_id")
-    private Article article;
-
-    public ArticleGrade(int positive, int negative, int neutral) {
-        this.positive=positive;
+    public ArticleGrade(int positive, int negative, int neutral, String comment) {
+        this.positive = positive;
         this.negative = negative;
         this.neutral = neutral;
+        this.comment = comment;
     }
 }

@@ -39,4 +39,11 @@ public class ArticleController {
        String email = authenticationFacade.getAuthentication().getName();
        return ResponseEntity.ok(articleService.getAllAuthorArticle(email));
     }
+
+    @ApiOperation(value = "Remove article")
+    @PostMapping(path="/removeArticle",consumes= MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity removeArticle(@RequestBody String id) throws OperationException {
+        articleService.deleteArticle(Long.parseLong(id));
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
 }

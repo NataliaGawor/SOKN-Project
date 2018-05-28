@@ -11,5 +11,6 @@ public interface ArticleService extends GenericService<Article,Long>{
     void uploadArticle(String email,MultipartFile file,String subject,String fieldOfArticle) throws OperationException;
     void saveFile(MultipartFile file,Long id) throws OperationException;
     void checkArticle(String article) throws OperationException;
+    void deleteArticle(Long articleId) throws OperationException;
     List<Article> getAllAuthorArticle(String email);
 }

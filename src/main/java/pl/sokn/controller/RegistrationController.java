@@ -8,10 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.sokn.definitions.SoknDefinitions.ApiMessages;
-import pl.sokn.dto.CustomResponseMessage;
-import pl.sokn.dto.PasswordCreate;
-import pl.sokn.dto.PasswordUpdate;
-import pl.sokn.dto.UserDTO;
+import pl.sokn.dto.*;
 import pl.sokn.entity.PasswordResetToken;
 import pl.sokn.entity.User;
 import pl.sokn.entity.VerificationToken;
@@ -65,6 +62,15 @@ public class RegistrationController {
         final String json = registrationService.sendRegistrationEmail(vToken, request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(json);
+    }
+
+    @ApiOperation(value = "Reviewer registration")
+    @PostMapping(path = "/registerReviewer", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity registerReviewer(@RequestBody UserDTO user,
+                                       final HttpServletRequest request) throws OperationException {
+        registrationService.saveReviewer(convertToEntity(user));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(new CustomResponseMessage<>(HttpStatus.CREATED,""));
     }
 
     /**

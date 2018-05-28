@@ -4,16 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-import pl.sokn.entity.Article;
-import pl.sokn.entity.Authority;
-import pl.sokn.entity.FieldOfArticle;
-import pl.sokn.entity.User;
+import pl.sokn.entity.*;
 import pl.sokn.enums.Gender;
 import pl.sokn.exception.OperationException;
-import pl.sokn.service.ArticleService;
-import pl.sokn.service.AuthorityService;
-import pl.sokn.service.FieldOfArticleService;
-import pl.sokn.service.UserService;
+import pl.sokn.service.*;
 
 import javax.transaction.Transactional;
 import java.util.Set;
@@ -32,15 +26,18 @@ public class DataLoader implements ApplicationRunner {
     private final UserService userService;
     private final FieldOfArticleService fieldOfArticleService;
     private final ArticleService articleService;
+    private final ArticleGradeService articleGradeService;
 
     @Autowired
     public DataLoader(AuthorityService authorityService,
                       @pl.sokn.annotation.qualifier.UserService UserService userService,
-                     FieldOfArticleService fieldOfArticleService,ArticleService articleService) {
+                     FieldOfArticleService fieldOfArticleService,ArticleService articleService,
+                        ArticleGradeService articleGradeService){
         this.authorityService = authorityService;
         this.userService = userService;
         this.fieldOfArticleService=fieldOfArticleService;
         this.articleService=articleService;
+        this.articleGradeService=articleGradeService;
     }
 
     @Override
@@ -59,6 +56,11 @@ public class DataLoader implements ApplicationRunner {
         authorityService.save(adminRole);
         final Authority passChangeRole = Authority.builder().role("PASS_CHANGE").build();
         authorityService.save(passChangeRole);
+
+        final FieldOfArticle fieldOne=FieldOfArticle.builder().field("Systemy Wbudowane").build();
+        fieldOfArticleService.save(fieldOne);
+        final FieldOfArticle fieldTwo=FieldOfArticle.builder().field("Sztuczna Inteligencja").build();
+        fieldOfArticleService.save(fieldTwo);
 
         final User user = User.builder()
                 .firstName("First")
@@ -104,40 +106,88 @@ public class DataLoader implements ApplicationRunner {
                 .city(KRAKOW)
                 .country(POLAND)
                 .authorities(Set.of(reviewerRole, authorRole))
+                .fieldOfArticles(Set.of(fieldOne, fieldTwo))
                 .build();
 
         userService.save(reviewer);
 
-        final FieldOfArticle fieldOne=FieldOfArticle.builder()
-                .field("Systemy Wbudowane")
-                .build();
+
 
         fieldOfArticleService.save(fieldOne);
+        fieldOfArticleService.save(fieldTwo);
 
-        final FieldOfArticle fieldTwo=FieldOfArticle.builder()
-                .field("Sztuczna Inteligencja")
+        final ArticleGrade grade=ArticleGrade.builder()
+                .negative(0)
+                .neutral(0)
+                .positive(0)
+                .comment("")
                 .build();
 
-        fieldOfArticleService.save(fieldTwo);
+        final ArticleGrade grade1=ArticleGrade.builder()
+                .negative(1)
+                .neutral(1)
+                .positive(1)
+                .comment("")
+                .build();
+
+        final ArticleGrade grade2=ArticleGrade.builder()
+                .negative(1)
+                .neutral(1)
+                .positive(1)
+                .comment("")
+                .build();
+
+        final ArticleGrade grade3=ArticleGrade.builder()
+                .negative(0)
+                .neutral(1)
+                .positive(2)
+                .comment("")
+                .build();
+
+        articleGradeService.save(grade);
+        articleGradeService.save(grade1);
+        articleGradeService.save(grade2);
+        articleGradeService.save(grade3);
 
         final Article articleOne=Article.builder()
                 .subject("Dynamika")
-                .pathFile("/uploadFiles/dyn.txt")
+                .pathFile("\\uploadFiles\\1_dyn.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
-                .comments("Słaby")
+                .articleGrade(grade)
                 .build();
 
          articleService.save(articleOne);
 
         final Article articleTwo=Article.builder()
                 .subject("Fizyka")
-                .pathFile("/uploadFiles/fiz.txt")
-                .user(user)
+                .pathFile("\\uploadFiles\\2_fiz.txt")
+                .user(admin)
                 .fieldOfArticle(fieldOne)
-                .comments("Słaby")
+                .articleGrade(grade1)
                 .build();
 
         articleService.save(articleTwo);
+
+        final Article articleThree=Article.builder()
+                .subject("Cos2")
+                .pathFile("\\uploadFiles\\1_fiz3.txt")
+                .user(user)
+                .fieldOfArticle(fieldOne)
+                .articleGrade(grade2)
+                .build();
+
+        articleService.save(articleThree);
+
+        final Article articleFour=Article.builder()
+                .subject("Cos1")
+                .pathFile("\\uploadFiles\\1_fiz2.txt")
+                .user(user)
+                .fieldOfArticle(fieldOne)
+                .articleGrade(grade3)
+                .build();
+
+        articleService.save(articleFour);
+
     }
 }

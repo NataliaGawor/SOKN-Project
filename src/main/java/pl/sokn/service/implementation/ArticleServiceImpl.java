@@ -5,19 +5,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pl.sokn.entity.Article;
+import pl.sokn.entity.ArticleGrade;
 import pl.sokn.entity.FieldOfArticle;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
-import pl.sokn.repository.ArticleRepository;
-import pl.sokn.repository.FieldOfArticleRepository;
-import pl.sokn.repository.GenericRepository;
-import pl.sokn.repository.UserRepository;
+import pl.sokn.repository.*;
 import pl.sokn.service.ArticleService;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -27,16 +27,18 @@ public class ArticleServiceImpl extends AbstractGenericService<Article,Long> imp
     private ArticleRepository articleRepository;
     private UserRepository userRepository;
     private FieldOfArticleRepository fieldOfArticleRepository;
-    private static String UPLOADED_FOLDER="uploadFiles\\";
-
+    private ArticleGradeRepository articleGradeRepository;
+    private static String UPLOADED_FOLDER="\\uploadFiles\\";
 
     @Autowired
     public ArticleServiceImpl(GenericRepository<Article, Long> repository, ArticleRepository articleRepository,
-                                UserRepository userRepository,FieldOfArticleRepository fieldOfArticleRepository) {
+                                UserRepository userRepository,FieldOfArticleRepository fieldOfArticleRepository,
+                                ArticleGradeRepository articleGradeRepository) {
         super(repository);
         this.articleRepository = articleRepository;
         this.userRepository=userRepository;
         this.fieldOfArticleRepository=fieldOfArticleRepository;
+        this.articleGradeRepository=articleGradeRepository;
     }
 
     @Override
@@ -61,19 +63,20 @@ public class ArticleServiceImpl extends AbstractGenericService<Article,Long> imp
         User user=userRepository.findByEmail(email);
         saveFile(file,user.getId()); //save file
         FieldOfArticle field=fieldOfArticleRepository.getOne(Long.valueOf(fieldOfArticle));
-        save(new Article(subject,UPLOADED_FOLDER+user.getId()+"_"+file.getOriginalFilename(),0,user,field));
+        ArticleGrade articleGrade=new ArticleGrade(0,0,0,"");
+        articleGradeRepository.save(articleGrade);
+        save(new Article(subject,UPLOADED_FOLDER+user.getId()+"_"+file.getOriginalFilename(),user,field,articleGrade));
     }
 
     @Override
     public void saveFile(MultipartFile file,Long id) throws OperationException {
         String fileName = file.getOriginalFilename();
-        File fileToGetLocation = new File("");
-        String currentDirectory = fileToGetLocation.getAbsolutePath();
+
         byte[] bytes;
         try{
             bytes = file.getBytes();
             BufferedOutputStream buffStream =
-                    new BufferedOutputStream(new FileOutputStream(new File(currentDirectory +"\\uploadFiles\\"+id+"_"+fileName)));
+                    new BufferedOutputStream(new FileOutputStream(new File(getPathTofile() +"\\uploadFiles\\"+id+"_"+fileName)));
             buffStream.write(bytes);
             buffStream.close();
         } catch (IOException e) {
@@ -96,8 +99,27 @@ public class ArticleServiceImpl extends AbstractGenericService<Article,Long> imp
     }
 
     @Override
+    public void deleteArticle( Long articleId) throws OperationException {
+        Article article=articleRepository.getOne(articleId);
+        String url=getPathTofile()+article.getPathFile();
+
+        try {
+            Files.delete(Paths.get(url));
+        } catch (IOException e) {
+            throw new OperationException(HttpStatus.NOT_ACCEPTABLE,"Brak pliku do usunięcia");
+        }
+        removeById(articleId);
+    }
+
+    @Override
     public List<Article> getAllAuthorArticle(String email){
         return articleRepository.findByUser(userRepository.findByEmail(email));
     }
+
+    private String getPathTofile(){
+        File fileToGetLocation = new File("");
+        return fileToGetLocation.getAbsolutePath();
+    }
+
 }
 

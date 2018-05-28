@@ -30,4 +30,6 @@ public interface RegistrationService extends UserService {
     void resetUserPassword(final PasswordCreate passwordCreate) throws OperationException;
 
     void changeUserPassword(PasswordUpdate password, String credentials) throws OperationException;
+
+    void saveReviewer(User user)throws OperationException;
 }

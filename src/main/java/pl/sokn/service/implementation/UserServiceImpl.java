@@ -5,12 +5,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sokn.dto.EmailMessage;
+import pl.sokn.entity.FieldOfArticle;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
 import pl.sokn.repository.PasswordResetTokenRepository;
 import pl.sokn.repository.TokenRepository;
 import pl.sokn.repository.UserRepository;
 import pl.sokn.service.AuthorityService;
+import pl.sokn.service.FieldOfArticleService;
 import pl.sokn.service.UserService;
 import pl.sokn.service.helper.SendEmailService;
 
@@ -21,6 +23,7 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
 
     final UserRepository userRepository;
     final AuthorityService authorityService;
+    final FieldOfArticleService fieldOfArticleService;
     final PasswordEncoder passwordEncoder;
     final TokenRepository tokenRepository;
     final PasswordResetTokenRepository passwordResetTokenRepository;
@@ -29,6 +32,7 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            AuthorityService authorityService,
+                           FieldOfArticleService fieldOfArticleService,
                            PasswordEncoder passwordEncoder,
                            TokenRepository tokenRepository,
                            PasswordResetTokenRepository passwordResetTokenRepository,
@@ -36,6 +40,7 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
         super(userRepository);
         this.userRepository = userRepository;
         this.authorityService = authorityService;
+        this.fieldOfArticleService = fieldOfArticleService;
         this.passwordEncoder = passwordEncoder;
         this.tokenRepository = tokenRepository;
         this.passwordResetTokenRepository = passwordResetTokenRepository;
