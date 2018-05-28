@@ -120,28 +120,28 @@ public class DataLoader implements ApplicationRunner {
                 .negative(0)
                 .neutral(0)
                 .positive(0)
-                .comment("")
+                .comment("nieźle")
                 .build();
 
         final ArticleGrade grade1=ArticleGrade.builder()
                 .negative(1)
                 .neutral(1)
                 .positive(1)
-                .comment("")
+                .comment("super")
                 .build();
 
         final ArticleGrade grade2=ArticleGrade.builder()
                 .negative(1)
                 .neutral(1)
                 .positive(1)
-                .comment("")
+                .comment("słaby")
                 .build();
 
         final ArticleGrade grade3=ArticleGrade.builder()
                 .negative(0)
                 .neutral(1)
                 .positive(2)
-                .comment("")
+                .comment("lepiej")
                 .build();
 
         articleGradeService.save(grade);
@@ -170,8 +170,8 @@ public class DataLoader implements ApplicationRunner {
         articleService.save(articleTwo);
 
         final Article articleThree=Article.builder()
-                .subject("Cos2")
-                .pathFile("\\uploadFiles\\1_fiz3.txt")
+                .subject("Matematyka")
+                .pathFile("\\uploadFiles\\1_mat.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade2)
@@ -180,8 +180,8 @@ public class DataLoader implements ApplicationRunner {
         articleService.save(articleThree);
 
         final Article articleFour=Article.builder()
-                .subject("Cos1")
-                .pathFile("\\uploadFiles\\1_fiz2.txt")
+                .subject("Biologia")
+                .pathFile("\\uploadFiles\\1_biol.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade3)

@@ -46,4 +46,9 @@ public class ArticleController {
         articleService.deleteArticle(Long.parseLong(id));
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
+    @ApiOperation(value = "Get article")
+    @PostMapping(path="/getArticle",consumes= MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity getArticle(@RequestBody String id){
+       return  ResponseEntity.ok(articleService.retrieve(Long.parseLong(id)));
+    }
 }

@@ -1,4 +1,4 @@
-package pl.sokn.controller.config;
+package pl.sokn.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.sokn.controller.config.BaseTest;
 import pl.sokn.definitions.SoknDefinitions;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
@@ -16,7 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ArticleControllerTest extends BaseTest{
+public class ArticleControllerTest extends BaseTest {
 
     @Test
     public void addArticle() throws Exception {
