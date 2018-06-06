@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.sokn.entity.FieldOfArticle;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -21,8 +21,6 @@ public class FieldOfArticleRepositoryTest {
     @Autowired
     private FieldOfArticleRepository fieldOfArticleRepository;
 
-    private FieldOfArticle fieldOfArticle;
-
     @Before
     public void createFieldOfArticle(){
         entityManager.persist(new FieldOfArticle("Sztuczna Inteligencja"));
@@ -31,13 +29,13 @@ public class FieldOfArticleRepositoryTest {
 
     @Test
     public void findByFieldOK(){
-        fieldOfArticle=fieldOfArticleRepository.findByField("Sztuczna Inteligencja");
+        FieldOfArticle fieldOfArticle=fieldOfArticleRepository.findByField("Sztuczna Inteligencja");
         assertEquals("Sztuczna Inteligencja",fieldOfArticle.getField());
     }
 
     @Test
-    public void findByFieldFalse(){
-        fieldOfArticle=fieldOfArticleRepository.findByField("SW");
-        assertFalse("SW".equals(fieldOfArticle.getField()));
+    public void findByFileNull(){
+        FieldOfArticle fieldOfArticle=fieldOfArticleRepository.findByField("SW");
+        assertNull(fieldOfArticle);
     }
 }

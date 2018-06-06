@@ -21,13 +21,13 @@ public class ArticleControllerTest extends BaseTest {
 
     @Test
     public void addArticle() throws Exception {
-       String token=obtainToken("author@email.com","pass");
+       String token=obtainToken("prelegent@email.com","pass");
 
         MockMultipartFile file=
                 new MockMultipartFile("file","test.txt", MediaType.TEXT_PLAIN_VALUE,"test".getBytes());
 
 
-                mvc.perform(fileUpload("/article/uploadArticle")
+                mvc.perform(fileUpload("/uploadArticle")
                         .file(file)
                         .param("subject","Test")
                         .param("fieldOfArticle","2")
@@ -38,13 +38,13 @@ public class ArticleControllerTest extends BaseTest {
 
     @Test
     public void addArticleWithBadSubject() throws Exception {
-        String token=obtainToken("author@email.com","pass");
+        String token=obtainToken("prelegent@email.com","pass");
 
         MockMultipartFile file=
                 new MockMultipartFile("file","test.txt", MediaType.TEXT_PLAIN_VALUE,"test".getBytes());
 
 
-        mvc.perform(fileUpload("/article/uploadArticle")
+        mvc.perform(fileUpload("/uploadArticle")
                 .file(file)
                 .param("subject","Test_2")
                 .param("fieldOfArticle","2")
