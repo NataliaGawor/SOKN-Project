@@ -25,6 +25,9 @@ public class ArticleGradeServiceImpl extends AbstractGenericService<ArticleGrade
     @Override
     public boolean canUserGiveReview(Long id, ArticleGrade articleGrade){
 
+        if(hasThreePartGrade(articleGrade))
+            return false;
+
         if(articleGrade.getReviewerIdOne() != null && articleGrade.getReviewerIdOne() == id)
             return false;
 
@@ -59,11 +62,11 @@ public class ArticleGradeServiceImpl extends AbstractGenericService<ArticleGrade
     public void addPartGrade(Long reviewerId, ArticleGrade articleGrade, int partGrade, String comment) throws OperationException {
         String commentTitle = "";
 
-        if(hasThreePartGrade(articleGrade))
-            throw new OperationException(HttpStatus.FORBIDDEN, "Artykuł już zawiera maksymalna liczbę ocen.");
+        if(!canUserGiveReview(reviewerId, articleGrade))
+            throw new OperationException(HttpStatus.BAD_REQUEST, "Artykuł już zawiera maksymalna liczbę ocen albo już oceniłeś.");
 
         if(!addReviewer(reviewerId, articleGrade))
-            throw new OperationException(HttpStatus.FORBIDDEN, "Nie można przypisać recenzenta do oceny.");
+            throw new OperationException(HttpStatus.BAD_REQUEST, "Nie można przypisać recenzenta do oceny.");
 
         //add singleGrade to articleGrade
         if(partGrade < 0){

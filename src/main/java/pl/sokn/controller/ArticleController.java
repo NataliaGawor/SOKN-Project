@@ -92,10 +92,8 @@ public class ArticleController {
     public ResponseEntity updateArticleGrade(@RequestParam("articleId") Long articleId,
                                             @RequestParam("partGrade") int partGrade,
                                             @RequestParam("comment") String comment) throws OperationException {
-        System.out.println("SERVER");
         String email = authenticationFacade.getAuthentication().getName();
         articleService.updateArticleGrade(email, articleId, partGrade, comment);
-        System.out.println("UDALO SIE");
         return ResponseEntity.status(HttpStatus.OK).body((new CustomResponseMessage<>(HttpStatus.OK, "")));
     }
 

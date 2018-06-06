@@ -129,22 +129,26 @@ public class DataLoader implements ApplicationRunner {
 
         final ArticleGrade grade1 = ArticleGrade.builder()
                 .negative(1)
-                .neutral(1)
-                .positive(1)
+                .neutral(0)
+                .positive(0)
+                .reviewerIdOne(1L)
                 .comment("super")
                 .build();
 
         final ArticleGrade grade2 = ArticleGrade.builder()
                 .negative(1)
-                .neutral(1)
+                .neutral(0)
                 .positive(1)
+                .reviewerIdOne(1L)
+                .reviewerIdTwo(2L)
                 .comment("slaby")
                 .build();
 
         final ArticleGrade grade3 = ArticleGrade.builder()
                 .negative(0)
                 .neutral(1)
-                .positive(2)
+                .positive(0)
+                .reviewerIdOne(1L)
                 .comment("lepiej")
                 .build();
 

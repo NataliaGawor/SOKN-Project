@@ -115,6 +115,7 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
 
         return articleRepository.findAll().stream()
                 .filter(article -> user.getFieldOfArticles().contains(article.getFieldOfArticle()))
+                .filter(article -> articleGradeService.canUserGiveReview(user.getId(), article.getArticleGrade()))
                 .collect(Collectors.toList());
     }
 

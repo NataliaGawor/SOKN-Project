@@ -68,6 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         Api.SEND_CONTACT_EMAIL+"/**",
                         Api.MAILING_LIST + "/**",
                         Api.GET_ALL_FIELDS_OF_ARTICLES + "/**",
+                        "/updateArticleGrade",
                         "/documentation/**",
                         "/swagger-resources/**",
                         "/v2/api-docs").permitAll() // access for every user
