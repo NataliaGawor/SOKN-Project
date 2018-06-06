@@ -10,6 +10,7 @@ import pl.sokn.entity.FieldOfArticle;
 import pl.sokn.entity.User;
 import pl.sokn.exception.OperationException;
 import pl.sokn.repository.*;
+import pl.sokn.service.ArticleGradeService;
 import pl.sokn.service.ArticleService;
 
 import java.io.File;
@@ -29,18 +30,18 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
     private ArticleRepository articleRepository;
     private UserRepository userRepository;
     private FieldOfArticleRepository fieldOfArticleRepository;
-    private ArticleGradeRepository articleGradeRepository;
+    private ArticleGradeService articleGradeService;
     private static final String UPLOADED_FOLDER = "uploadFiles" + SEPARATOR;
 
     @Autowired
     public ArticleServiceImpl(GenericRepository<Article, Long> repository, ArticleRepository articleRepository,
                               UserRepository userRepository, FieldOfArticleRepository fieldOfArticleRepository,
-                              ArticleGradeRepository articleGradeRepository) {
+                              ArticleGradeService articleGradeService) {
         super(repository);
         this.articleRepository = articleRepository;
         this.userRepository = userRepository;
         this.fieldOfArticleRepository = fieldOfArticleRepository;
-        this.articleGradeRepository = articleGradeRepository;
+        this.articleGradeService = articleGradeService;
     }
 
     private void checkFile(MultipartFile file) throws OperationException {
@@ -63,6 +64,15 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
     }
 
     @Override
+    public void updateArticleGrade(String email, Long articleId, int partGrade, String comment) throws OperationException {
+        Article article = articleRepository.getOne(articleId);
+        User user = userRepository.findByEmail(email);
+        articleGradeService.addPartGrade(user.getId(), article.getArticleGrade(), partGrade, comment);
+        //remove user email form this article
+        //TO DO
+    }
+
+    @Override
     public void uploadArticle(String email, MultipartFile file, String subject, String fieldOfArticle) throws
             OperationException, IOException {
         checkArticle(subject);
@@ -71,7 +81,7 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
         saveFile(file, user.getId()); //save file
         FieldOfArticle field = fieldOfArticleRepository.getOne(Long.valueOf(fieldOfArticle));
         final ArticleGrade articleGrade = new ArticleGrade(0, 0, 0, "");
-        articleGradeRepository.save(articleGrade);
+        articleGradeService.save(articleGrade);
         save(new Article(subject, UPLOADED_FOLDER + user.getId() + "_" + file.getOriginalFilename(), user, field, articleGrade));
     }
 

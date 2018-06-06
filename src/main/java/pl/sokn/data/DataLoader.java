@@ -117,14 +117,14 @@ public class DataLoader implements ApplicationRunner {
 
         userService.save(reviewer);
 
-        fieldOfArticleService.save(fieldOne);
-        fieldOfArticleService.save(fieldTwo);
+//        fieldOfArticleService.save(fieldOne);
+//        fieldOfArticleService.save(fieldTwo);
 
         final ArticleGrade grade = ArticleGrade.builder()
                 .negative(0)
                 .neutral(0)
                 .positive(0)
-                .comment("nieźle")
+                .comment("niezle")
                 .build();
 
         final ArticleGrade grade1 = ArticleGrade.builder()
@@ -138,7 +138,7 @@ public class DataLoader implements ApplicationRunner {
                 .negative(1)
                 .neutral(1)
                 .positive(1)
-                .comment("słaby")
+                .comment("slaby")
                 .build();
 
         final ArticleGrade grade3 = ArticleGrade.builder()
@@ -183,22 +183,22 @@ public class DataLoader implements ApplicationRunner {
 
         articleService.save(articleThree);
 
-        final Article articleFour = Article.builder()
-                .subject("Biologia")
-                .pathFile(UPLOADED_FOLDER + "1_biol.txt")
-                .user(user)
-                .fieldOfArticle(fieldOne)
-                .articleGrade(grade3)
-                .build();
-
-        articleService.save(articleFour);
+//        final Article articleFour = Article.builder()
+//                .subject("Biologia")
+//                .pathFile(UPLOADED_FOLDER + "1_biol.txt")
+//                .user(user)
+//                .fieldOfArticle(fieldOne)
+//                .articleGrade(grade3)
+//                .build();
+//
+//        articleService.save(articleFour);
 
         final Article grapheneArticle = Article.builder()
                 .subject("Grafen")
                 .pathFile(UPLOADED_FOLDER + "1_GrafenMaterial.pdf")
                 .user(user)
                 .fieldOfArticle(fieldTwo)
-                .articleGrade(grade1)
+                .articleGrade(grade3)
                 .build();
 
         articleService.save(grapheneArticle);
