@@ -109,4 +109,22 @@ public class UserServiceImpl extends AbstractGenericService<User, Long> implemen
 
         sendEmailService.constructAddReviewerAuthority(email);
     }
+
+    //check if other user has the same email address as user from argument
+    private boolean hasUniqueEmail(User user){
+        User otherUser = retrieveByEmail(user.getEmail());
+
+        if(otherUser != null && otherUser.getId() != user.getId())
+            return false;
+        return true;
+    }
+
+    @Override
+    public void updateUser(User user) throws OperationException{
+
+        if(!hasUniqueEmail(user))
+            throw new OperationException(HttpStatus.BAD_REQUEST, "Ten adres email należy do innego użytkownika, podaj inny.");
+
+        update(user);
+    }
 }
