@@ -29,11 +29,11 @@ public class ArticleController {
     @Autowired
     public ArticleController(ArticleService articleService, AuthenticationFacade authenticationFacade) {
         this.articleService = articleService;
-        this.authenticationFacade=authenticationFacade;
+        this.authenticationFacade = authenticationFacade;
     }
 
     @ApiOperation(value = "add Article")
-    @PostMapping(path="/uploadArticle")
+    @PostMapping(path = "/uploadArticle")
     public ResponseEntity uploadArticle(@RequestParam("file") MultipartFile file,
                                         @RequestParam("subject") String subjectId,
                                         @RequestParam("fieldOfArticle") String fieldOfArticle) throws OperationException, IOException {
@@ -50,7 +50,7 @@ public class ArticleController {
 
         final String email = authenticationFacade.getAuthentication().getName();
 
-        final List<Article> articles = articleService.getAll(email);
+        final List<Article> articles = articleService.getArticlesToReview(email);
 
         return ResponseEntity.ok(articles.stream()
                 .map(Article::convertTo)
@@ -65,22 +65,24 @@ public class ArticleController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "filename=" + path)
                 .body(bytes);
     }
+
     @ApiOperation(value = "Get all articles")
-    @GetMapping(path="/getAllArticles",produces= MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getAllArticle(){
-       String email = authenticationFacade.getAuthentication().getName();
-       return ResponseEntity.ok(articleService.getAllAuthorArticle(email));
+    @GetMapping(path = "/getAllArticles", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getAllArticle() {
+        String email = authenticationFacade.getAuthentication().getName();
+        return ResponseEntity.ok(articleService.getAllAuthorArticle(email));
     }
 
     @ApiOperation(value = "Remove article")
-    @PostMapping(path="/removeArticle",consumes= MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/removeArticle", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity removeArticle(@RequestBody String id) throws OperationException {
         articleService.deleteArticle(Long.parseLong(id));
         return ResponseEntity.ok(HttpStatus.ACCEPTED);
     }
+
     @ApiOperation(value = "Get article")
-    @PostMapping(path="/getArticle",consumes= MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity getArticleOne(@RequestBody String id){
-       return  ResponseEntity.ok(articleService.retrieve(Long.parseLong(id)));
+    @PostMapping(path = "/getArticle", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getArticleOne(@RequestBody String id) {
+        return ResponseEntity.ok(articleService.retrieve(Long.parseLong(id)));
     }
 }

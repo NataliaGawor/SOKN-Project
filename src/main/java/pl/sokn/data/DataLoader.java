@@ -37,13 +37,13 @@ public class DataLoader implements ApplicationRunner {
     public DataLoader(AuthorityService authorityService,
                       @pl.sokn.annotation.qualifier.UserService UserService userService,
 
-                     FieldOfArticleService fieldOfArticleService,ArticleService articleService,
-                        ArticleGradeService articleGradeService){
+                      FieldOfArticleService fieldOfArticleService, ArticleService articleService,
+                      ArticleGradeService articleGradeService) {
         this.authorityService = authorityService;
         this.userService = userService;
-        this.fieldOfArticleService=fieldOfArticleService;
-        this.articleService=articleService;
-        this.articleGradeService=articleGradeService;
+        this.fieldOfArticleService = fieldOfArticleService;
+        this.articleService = articleService;
+        this.articleGradeService = articleGradeService;
     }
 
     @Override
@@ -63,9 +63,9 @@ public class DataLoader implements ApplicationRunner {
         final Authority passChangeRole = Authority.builder().role(Roles.PASS_CHANGE_ROLE).build();
         authorityService.save(passChangeRole);
 
-        final FieldOfArticle fieldOne=FieldOfArticle.builder().field("Systemy Wbudowane").build();
+        final FieldOfArticle fieldOne = FieldOfArticle.builder().field("Systemy Wbudowane").build();
         fieldOfArticleService.save(fieldOne);
-        final FieldOfArticle fieldTwo=FieldOfArticle.builder().field("Sztuczna Inteligencja").build();
+        final FieldOfArticle fieldTwo = FieldOfArticle.builder().field("Sztuczna Inteligencja").build();
         fieldOfArticleService.save(fieldTwo);
 
         final User user = User.builder()
@@ -117,33 +117,31 @@ public class DataLoader implements ApplicationRunner {
 
         userService.save(reviewer);
 
-
-
         fieldOfArticleService.save(fieldOne);
         fieldOfArticleService.save(fieldTwo);
 
-        final ArticleGrade grade=ArticleGrade.builder()
+        final ArticleGrade grade = ArticleGrade.builder()
                 .negative(0)
                 .neutral(0)
                 .positive(0)
-                .comment("nieźle")
+                .comment("<br>nieźle</br><br>słabo</br>")
                 .build();
 
-        final ArticleGrade grade1=ArticleGrade.builder()
+        final ArticleGrade grade1 = ArticleGrade.builder()
                 .negative(1)
                 .neutral(1)
                 .positive(1)
                 .comment("super")
                 .build();
 
-        final ArticleGrade grade2=ArticleGrade.builder()
+        final ArticleGrade grade2 = ArticleGrade.builder()
                 .negative(1)
                 .neutral(1)
                 .positive(1)
                 .comment("słaby")
                 .build();
 
-        final ArticleGrade grade3=ArticleGrade.builder()
+        final ArticleGrade grade3 = ArticleGrade.builder()
                 .negative(0)
                 .neutral(1)
                 .positive(2)
@@ -155,19 +153,19 @@ public class DataLoader implements ApplicationRunner {
         articleGradeService.save(grade2);
         articleGradeService.save(grade3);
 
-        final Article articleOne=Article.builder()
+        final Article articleOne = Article.builder()
                 .subject("Dynamika")
-                .pathFile("uploadFiles\\1_dyn.txt")
+                .pathFile(UPLOADED_FOLDER + "1_dyn.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade)
                 .build();
 
-         articleService.save(articleOne);
+        articleService.save(articleOne);
 
-        final Article articleTwo=Article.builder()
+        final Article articleTwo = Article.builder()
                 .subject("Fizyka")
-                .pathFile("uploadFiles\\2_fiz.txt")
+                .pathFile(UPLOADED_FOLDER + "2_fiz.txt")
                 .user(admin)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade1)
@@ -175,9 +173,9 @@ public class DataLoader implements ApplicationRunner {
 
         articleService.save(articleTwo);
 
-        final Article articleThree=Article.builder()
+        final Article articleThree = Article.builder()
                 .subject("Matematyka")
-                .pathFile("uploadFiles\\1_mat.txt")
+                .pathFile(UPLOADED_FOLDER + "1_mat.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade2)
@@ -185,9 +183,9 @@ public class DataLoader implements ApplicationRunner {
 
         articleService.save(articleThree);
 
-        final Article articleFour=Article.builder()
+        final Article articleFour = Article.builder()
                 .subject("Biologia")
-                .pathFile("uploadFiles\\1_biol.txt")
+                .pathFile(UPLOADED_FOLDER + "1_biol.txt")
                 .user(user)
                 .fieldOfArticle(fieldOne)
                 .articleGrade(grade3)
@@ -195,6 +193,14 @@ public class DataLoader implements ApplicationRunner {
 
         articleService.save(articleFour);
 
+        final Article grapheneArticle = Article.builder()
+                .subject("Grafen")
+                .pathFile(UPLOADED_FOLDER + "1_GrafenMaterial.pdf")
+                .user(user)
+                .fieldOfArticle(fieldTwo)
+                .articleGrade(grade1)
+                .build();
 
+        articleService.save(grapheneArticle);
     }
 }

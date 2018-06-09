@@ -22,7 +22,7 @@ public class FieldOfArticleRepositoryTest {
     private FieldOfArticleRepository fieldOfArticleRepository;
 
     @Before
-    public void createFieldOfArticle(){
+    public void createFieldOfArticle() {
         entityManager.persist(new FieldOfArticle("Sztuczna Inteligencja"));
         entityManager.persist(new FieldOfArticle("Systemy Wbudowane"));
     }
@@ -34,8 +34,8 @@ public class FieldOfArticleRepositoryTest {
     }
 
     @Test
-    public void findByFileNull(){
-        FieldOfArticle fieldOfArticle=fieldOfArticleRepository.findByField("SW");
+    public void findByFieldNull() {
+        FieldOfArticle fieldOfArticle = fieldOfArticleRepository.findByField("SW");
         assertNull(fieldOfArticle);
     }
 }
