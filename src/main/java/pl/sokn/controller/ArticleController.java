@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pl.sokn.definitions.SoknDefinitions;
 import pl.sokn.dto.ArticleDTO;
+import pl.sokn.dto.CustomResponseMessage;
 import pl.sokn.entity.Article;
 import pl.sokn.exception.OperationException;
 import pl.sokn.security.information.AuthenticationFacade;
@@ -85,4 +86,15 @@ public class ArticleController {
     public ResponseEntity getArticleOne(@RequestBody String id) {
         return ResponseEntity.ok(articleService.retrieve(Long.parseLong(id)));
     }
+
+    @ApiOperation(value = "Update article grade")
+    @PostMapping(path = "/updateArticleGrade")
+    public ResponseEntity updateArticleGrade(@RequestParam("articleId") Long articleId,
+                                            @RequestParam("partGrade") int partGrade,
+                                            @RequestParam("comment") String comment) throws OperationException {
+        String email = authenticationFacade.getAuthentication().getName();
+        articleService.updateArticleGrade(email, articleId, partGrade, comment);
+        return ResponseEntity.status(HttpStatus.OK).body((new CustomResponseMessage<>(HttpStatus.OK, "")));
+    }
+
 }

@@ -23,6 +23,9 @@ public class ArticleGrade {
     private int negative;
     private int neutral;
     private String comment;
+    private Long reviewerIdOne;
+    private Long reviewerIdTwo;
+    private Long reviewerIdThree;
 
     public ArticleGrade(int positive, int negative, int neutral, String comment) {
         this.positive = positive;

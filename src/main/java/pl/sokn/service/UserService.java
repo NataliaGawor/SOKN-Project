@@ -10,4 +10,5 @@ public interface UserService extends GenericService<User, Long> {
     User isUserInDB(final String email, final HttpServletRequest request)throws OperationException;
     void sendEmail(final EmailMessage emailDTO, final HttpServletRequest request)throws OperationException;
     void addReviewerAuthority(final String email, final String fieldObligatory, final String fieldAdditional) throws OperationException;
+    void updateUser(User user) throws OperationException;
 }
