@@ -63,10 +63,12 @@ public class DataLoader implements ApplicationRunner {
         final Authority passChangeRole = Authority.builder().role(Roles.PASS_CHANGE_ROLE).build();
         authorityService.save(passChangeRole);
 
-        final FieldOfArticle fieldOne = FieldOfArticle.builder().field("Systemy Wbudowane").build();
-        fieldOfArticleService.save(fieldOne);
-        final FieldOfArticle fieldTwo = FieldOfArticle.builder().field("Sztuczna Inteligencja").build();
-        fieldOfArticleService.save(fieldTwo);
+        final FieldOfArticle aiField = FieldOfArticle.builder().field("Sztuczna Inteligencja").build();
+        fieldOfArticleService.save(aiField);
+        final FieldOfArticle mathField = FieldOfArticle.builder().field("Matematyka").build();
+        fieldOfArticleService.save(mathField);
+        final FieldOfArticle embeddedField = FieldOfArticle.builder().field("Systemy Wbudowane").build();
+        fieldOfArticleService.save(embeddedField);
 
         final User user = User.builder()
                 .firstName("Prelegent")
@@ -113,13 +115,28 @@ public class DataLoader implements ApplicationRunner {
                 .zipCode("32-456")
                 .country(POLAND)
                 .authorities(Set.of(reviewerRole, authorRole))
-                .fieldOfArticles(Set.of(fieldOne, fieldTwo))
+                .fieldOfArticles(Set.of(aiField, mathField, embeddedField))
                 .build();
 
         userService.save(reviewer);
 
-//        fieldOfArticleService.save(fieldOne);
-//        fieldOfArticleService.save(fieldTwo);
+        final User reviewer2 = User.builder()
+                .firstName("Recenzent2")
+                .lastName("Nazwisko2")
+                .email("recenzent2@email.com")
+                .enabled(true)
+                .password(PASSWORD)
+                .degree("Magister")
+                .gender(Gender.MALE)
+                .affiliation("Kawaler / Panna")
+                .city(KRAKOW)
+                .zipCode("32-456")
+                .country(POLAND)
+                .authorities(Set.of(reviewerRole, authorRole))
+                .fieldOfArticles(Set.of(embeddedField))
+                .build();
+
+        userService.save(reviewer2);
 
         final ArticleGrade grade = ArticleGrade.builder()
                 .negative(0)
@@ -158,54 +175,44 @@ public class DataLoader implements ApplicationRunner {
         articleGradeService.save(grade2);
         articleGradeService.save(grade3);
 
-        final Article articleOne = Article.builder()
-                .subject("Dynamika")
-                .pathFile(UPLOADED_FOLDER + "1_dyn.txt")
+        final Article mathArticle = Article.builder()
+                .subject("Dane Bibliometryczne")
+                .pathFile(UPLOADED_FOLDER + "1_DaneBibliometryczne.pdf")
                 .user(user)
-                .fieldOfArticle(fieldOne)
-                .articleGrade(grade)
-                .build();
-
-        articleService.save(articleOne);
-
-        final Article articleTwo = Article.builder()
-                .subject("Fizyka")
-                .pathFile(UPLOADED_FOLDER + "2_fiz.txt")
-                .user(admin)
-                .fieldOfArticle(fieldOne)
+                .fieldOfArticle(mathField)
                 .articleGrade(grade1)
                 .build();
 
-        articleService.save(articleTwo);
+        articleService.save(mathArticle);
 
-        final Article articleThree = Article.builder()
-                .subject("Matematyka")
-                .pathFile(UPLOADED_FOLDER + "1_mat.txt")
+        final Article aiArticle = Article.builder()
+                .subject("Rozwoj Szanse I Zagrozenia")
+                .pathFile(UPLOADED_FOLDER + "1_Rozwoj_Szanse_I_Zagrozenia.pdf")
                 .user(user)
-                .fieldOfArticle(fieldOne)
+                .fieldOfArticle(aiField)
                 .articleGrade(grade2)
                 .build();
 
-        articleService.save(articleThree);
+        articleService.save(aiArticle);
 
-//        final Article articleFour = Article.builder()
-//                .subject("Biologia")
-//                .pathFile(UPLOADED_FOLDER + "1_biol.txt")
-//                .user(user)
-//                .fieldOfArticle(fieldOne)
-//                .articleGrade(grade3)
-//                .build();
-//
-//        articleService.save(articleFour);
-
-        final Article grapheneArticle = Article.builder()
-                .subject("Grafen")
-                .pathFile(UPLOADED_FOLDER + "1_GrafenMaterial.pdf")
+        final Article embeddedArticle = Article.builder()
+                .subject("Nauczanie Systemow Wbudowanych")
+                .pathFile(UPLOADED_FOLDER + "1_Nauczanie_Systemow_Wbudowanych.pdf")
                 .user(user)
-                .fieldOfArticle(fieldTwo)
+                .fieldOfArticle(embeddedField)
                 .articleGrade(grade3)
                 .build();
 
-        articleService.save(grapheneArticle);
+        articleService.save(embeddedArticle);
+
+        final Article embeddedArticle2 = Article.builder()
+                .subject("Arduino")
+                .pathFile(UPLOADED_FOLDER + "2_Arduino.pdf")
+                .user(admin)
+                .fieldOfArticle(embeddedField)
+                .articleGrade(grade3)
+                .build();
+
+        articleService.save(embeddedArticle2);
     }
 }

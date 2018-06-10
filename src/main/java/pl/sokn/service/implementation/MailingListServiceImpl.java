@@ -30,9 +30,7 @@ public class MailingListServiceImpl extends AbstractGenericService<MailingList, 
 
     @Override
     public boolean checkIfSignedIn(final String email){
-        if(retrieve(email)!= null)
-            return true;
-        return false;
+        return retrieve(email) != null;
     }
 
     @Override
