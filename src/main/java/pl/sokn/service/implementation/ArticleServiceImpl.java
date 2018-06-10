@@ -85,7 +85,6 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
         save(new Article(subject, UPLOADED_FOLDER + user.getId() + "_" + file.getOriginalFilename(), user, field, articleGrade));
     }
 
-
     @Override
     public void deleteArticle(Long articleId) throws OperationException {
         Article article = articleRepository.getOne(articleId);
@@ -137,5 +136,3 @@ public class ArticleServiceImpl extends AbstractGenericService<Article, Long> im
             throw new OperationException(HttpStatus.NOT_ACCEPTABLE, "Artykuł o podanej nazwie został już dodany.");
     }
 }
-
-
