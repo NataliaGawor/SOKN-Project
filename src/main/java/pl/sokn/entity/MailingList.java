@@ -1,5 +1,6 @@
 package pl.sokn.entity;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import pl.sokn.dto.MailingListDTO;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Email;
  * The entity needed for storing email addresses added to newsletter
  */
 
+@Builder
 @Entity
 @Data
 @NoArgsConstructor
