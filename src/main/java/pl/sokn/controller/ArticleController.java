@@ -82,7 +82,7 @@ public class ArticleController {
     }
 
     @ApiOperation(value = "Get article")
-    @PostMapping(path = "/getArticle", consumes = MediaType.TEXT_PLAIN_VALUE)
+    @PostMapping(path = "/getArticle", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getArticleOne(@RequestBody String id) {
         return ResponseEntity.ok(articleService.retrieve(Long.parseLong(id)));
     }

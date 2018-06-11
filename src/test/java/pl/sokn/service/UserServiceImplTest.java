@@ -1,14 +1,12 @@
 package pl.sokn.service;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import pl.sokn.definitions.SoknDefinitions;
 import pl.sokn.definitions.SoknDefinitions.Roles;
 import pl.sokn.entity.Authority;
 import pl.sokn.entity.FieldOfArticle;
@@ -20,8 +18,6 @@ import pl.sokn.repository.TokenRepository;
 import pl.sokn.repository.UserRepository;
 import pl.sokn.service.helper.SendEmailService;
 import pl.sokn.service.implementation.UserServiceImpl;
-
-import java.util.Set;
 
 import static com.google.common.collect.Sets.newHashSet;
 import static org.junit.Assert.*;

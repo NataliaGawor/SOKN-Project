@@ -40,9 +40,9 @@ public class ArticleRepositoryTest {
         User user=createUser(authority,fieldOfArticle,"prelegent@email.com");
         User user1=createUser(authority,fieldOfArticle,"administrator@email.com");
         ArticleGrade articleGrade = entityManager.persist(new ArticleGrade(0, 0, 0, ""));
-        entityManager.persist(new Article("fiz","path",user,fieldOfArticle,articleGrade));
-        entityManager.persist(new Article("mat","path",user,fieldOfArticle,articleGrade));
-        entityManager.persist(new Article("fizmat","path",user1,fieldOfArticle,articleGrade));
+       entityManager.persist(new Article("fiz","path",user,fieldOfArticle,articleGrade));
+       entityManager.persist(new Article("mat","path",user,fieldOfArticle,articleGrade));
+       entityManager.persist(new Article("fizmat","path",user1,fieldOfArticle,articleGrade));
     }
 
     private User createUser(Authority authority,FieldOfArticle fieldOfArticle,String email){
